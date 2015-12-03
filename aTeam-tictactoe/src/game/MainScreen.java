@@ -1,5 +1,8 @@
 package game;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Joe
  *
@@ -76,7 +79,14 @@ public class MainScreen extends javax.swing.JFrame {
                 jButton1KeyPressed(evt);
             }
         });
-
+        
+        jMenuExit.addActionListener(new java.awt.event.ActionListener() {
+          public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jMenuExitActionPerformed(evt);
+          }
+      });
+      
+        
         jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -238,7 +248,12 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void jMenuNewGameActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-    }                                            
+    }
+    
+		private void jMenuExitActionPerformed(ActionEvent evt)
+		{
+			System.exit(0);
+		}
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:

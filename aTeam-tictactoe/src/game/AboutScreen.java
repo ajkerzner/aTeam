@@ -45,9 +45,9 @@ public class AboutScreen extends javax.swing.JFrame {
 
       jLabel4.setText("Ronald Drescher");
 
-      jLabel6.setText("Alex Kerzner");
+      jLabel6.setText("Walter Goerling");
 
-      jLabel7.setText("Walter Goerling");
+      jLabel7.setText("Alex Kerzner");
 
       jLabel8.setText("Joseph Miller");
 

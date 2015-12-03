@@ -3,6 +3,8 @@
  */
 package game;
 
+import java.awt.event.ActionEvent;
+
 /**
  * @author Joe
  *
@@ -54,6 +56,12 @@ public class NameScreen extends javax.swing.JFrame
             jTextFieldP1ActionPerformed(evt);
         }
     });
+    
+    jExit.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+          jExitActionPerformed(evt);
+      }
+  });
 
     jLabelP2.setText("Player 2 Name:");
     
@@ -89,12 +97,6 @@ public class NameScreen extends javax.swing.JFrame
     jMenuFile.add(jNewGame);
 
     jExit.setText("Exit");
-    
-    jExit.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jExitActionPerformed(evt);
-        }
-    });
     
     jMenuFile.add(jExit);
 
@@ -165,7 +167,12 @@ private void jNewGameActionPerformed(java.awt.event.ActionEvent evt) {
     String player2Name;
 private void jTextFieldP2ActionPerformed(java.awt.event.ActionEvent evt) {                                             
     player2Name = jTextFieldP2.getText();
-}                                            
+}    
+
+private void jExitActionPerformed(ActionEvent evt)
+{
+	System.exit(0);
+}
 
 private void jMenuFilePropertyChange(java.beans.PropertyChangeEvent evt) {                                         
     // TODO add your handling code here:
@@ -176,10 +183,7 @@ private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {
     new MainScreen().setVisible(true);
     dispose();
 }                                           
-
-private void jExitActionPerformed(java.awt.event.ActionEvent evt) {                                      
-    dispose();
-}                                     
+                                    
     String player1Name;
 private void jTextFieldP1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
     player1Name = jTextFieldP1.getText();
