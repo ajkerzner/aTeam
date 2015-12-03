@@ -111,17 +111,15 @@ public class MainScreen extends javax.swing.JFrame {
         jButton9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton9.setPreferredSize(new java.awt.Dimension(75, 75));
 
-        jLabel1.setText("Win Count:");
+        jLabel1.setText("   Win Count:");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setText("Win Count:");
+        jLabel2.setText("   Win Count:");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Current Turn");
-
         jLabel4.setText("Player 1:");
-
         jMenu1.setText("File");
 
         jMenuNewGame.setText("New Game");
@@ -130,34 +128,31 @@ public class MainScreen extends javax.swing.JFrame {
                 jMenuNewGameActionPerformed(evt);
             }
         });
+        
         jMenu1.add(jMenuNewGame);
-
         jMenuExit.setText("Exit");
         jMenu1.add(jMenuExit);
-
         jMenuBar1.add(jMenu1);
-
         jMenu2.setText("Edit");
-
         jMenuUndo.setText("Undo Move");
         jMenu2.add(jMenuUndo);
-
         jMenuBar1.add(jMenu2);
-
         jMenu3.setText("Help");
-
         jMenuMainScreenAbout.setText("About");
+        
         jMenuMainScreenAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuMainScreenAboutActionPerformed(evt);
             }
         });
+        
         jMenu3.add(jMenuMainScreenAbout);
 
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
+        //All of this is the GUI formatting, don't worry about it
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -236,6 +231,7 @@ public class MainScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+    //Now you can go back to worrying about it
     private void jMenuNewGameActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
     }                                            
@@ -267,6 +263,7 @@ public class MainScreen extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
