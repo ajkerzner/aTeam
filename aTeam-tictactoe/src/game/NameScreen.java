@@ -170,13 +170,14 @@ private void jMenuFilePropertyChange(java.beans.PropertyChangeEvent evt) {
     // TODO add your handling code here:
 }                                        
 
+//This loads up the Main Screen (game board) jFrame and disposes of the NameScreen page
 private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {                                            
     new MainScreen().setVisible(true);
     dispose();
 }                                           
 
 private void jExitActionPerformed(java.awt.event.ActionEvent evt) {                                      
-    // TODO add your handling code here:
+    dispose();
 }                                     
     String player1Name;
 private void jTextFieldP1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
