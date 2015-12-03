@@ -34,6 +34,7 @@ public class NameScreen extends javax.swing.JFrame
     jUndo = new javax.swing.JMenuItem(); //Undo option from menu bar
     jMenuHelp = new javax.swing.JMenu(); //Drop-down bar at top
     jAbout = new javax.swing.JMenuItem(); //About option from menu bar
+    setResizable(false);
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 

@@ -55,6 +55,7 @@ public class MainScreen extends javax.swing.JFrame {
         jMenuUndo = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuMainScreenAbout = new javax.swing.JMenuItem();
+        setResizable(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
