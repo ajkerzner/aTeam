@@ -20,21 +20,21 @@ public class NameScreen extends javax.swing.JFrame
 	
 	private void initComponents() {
 
-    jTitle = new javax.swing.JLabel(); //The title "Tic-Tac-Toe" on the Name Input Screen
-    jLabelP1 = new javax.swing.JLabel(); //The jLabel for "Player 1"
-    jTextFieldP1 = new javax.swing.JTextField(); //The jTextField used to input Player 1's name
-    jLabelP2 = new javax.swing.JLabel(); //The jLabel for "Player 2"
-    jTextFieldP2 = new javax.swing.JTextField(); //The jTextField used to input Player 1's name
-    jButtonPlay = new javax.swing.JButton(); //The button pressed to start a game
-    jMenuBar1 = new javax.swing.JMenuBar(); //Drop-down bar at top
-    jMenuFile = new javax.swing.JMenu(); //Drop-down bar at top
-    jNewGame = new javax.swing.JMenuItem(); //New Game option from menu bar
-    jExit = new javax.swing.JMenuItem(); //Exit option from menu bar
-    jMenuEdit = new javax.swing.JMenu(); //Drop-down bar at top
-    jUndo = new javax.swing.JMenuItem(); //Undo option from menu bar
-    jMenuHelp = new javax.swing.JMenu(); //Drop-down bar at top
-    jAbout = new javax.swing.JMenuItem(); //About option from menu bar
-    setResizable(false);
+    jTitle = new javax.swing.JLabel(); 						//The title "Tic-Tac-Toe" on the Name Input Screen
+    jLabelP1 = new javax.swing.JLabel(); 					//The jLabel for "Player 1"
+    jTextFieldP1 = new javax.swing.JTextField(); 	//The jTextField used to input Player 1's name
+    jLabelP2 = new javax.swing.JLabel(); 					//The jLabel for "Player 2"
+    jTextFieldP2 = new javax.swing.JTextField(); 	//The jTextField used to input Player 1's name
+    jButtonPlay = new javax.swing.JButton(); 			//The button pressed to start a game
+    jMenuBar1 = new javax.swing.JMenuBar(); 			//Drop-down bar at top
+    jMenuFile = new javax.swing.JMenu(); 					//Drop-down bar at top
+    jNewGame = new javax.swing.JMenuItem(); 			//New Game option from menu bar
+    jExit = new javax.swing.JMenuItem(); 					//Exit option from menu bar
+    jMenuEdit = new javax.swing.JMenu(); 					//Drop-down bar at top
+    jUndo = new javax.swing.JMenuItem(); 					//Undo option from menu bar
+    jMenuHelp = new javax.swing.JMenu(); 					//Drop-down bar at top
+    jAbout = new javax.swing.JMenuItem(); 				//About option from menu bar
+    setResizable(false);													//Makes it so the window is not resizable
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
