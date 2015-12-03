@@ -34,15 +34,15 @@ public class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton(); //Top-left game button
-        jButton2 = new javax.swing.JButton(); //Top-center game button
-        jButton3 = new javax.swing.JButton(); //Top-right game button
-        jButton4 = new javax.swing.JButton(); //Mid-left game button
-        jButton5 = new javax.swing.JButton(); //Center game button
-        jButton6 = new javax.swing.JButton(); //Mid-right game button
-        jButton7 = new javax.swing.JButton(); //Bottom-left game button
-        jButton8 = new javax.swing.JButton(); //Bottom-center game button
-        jButton9 = new javax.swing.JButton(); //Bottom-right game button
+        jButton1 = new javax.swing.JButton(); 						//Top-left game button
+        jButton2 = new javax.swing.JButton(); 						//Top-center game button
+        jButton3 = new javax.swing.JButton(); 						//Top-right game button
+        jButton4 = new javax.swing.JButton(); 						//Mid-left game button
+        jButton5 = new javax.swing.JButton(); 						//Center game button
+        jButton6 = new javax.swing.JButton(); 						//Mid-right game button
+        jButton7 = new javax.swing.JButton(); 						//Bottom-left game button
+        jButton8 = new javax.swing.JButton(); 						//Bottom-center game button
+        jButton9 = new javax.swing.JButton(); 						//Bottom-right game button
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -54,7 +54,8 @@ public class MainScreen extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuUndo = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuMainScreenAbout = new javax.swing.JMenuItem();
+        jMenuMainScreenAbout = new javax.swing.JMenuItem();	//
+        setResizable(false);																//Makes it so the window is not resizable
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
