@@ -14,7 +14,9 @@ public class Main
 		// TODO Parse command-line arguments. (optional)
 
 		// Pass command-line arguments to child function startGame(...).
-		MainScreen.startGame(args);
+		//MainScreen.startGame(args);
+		NameScreen name = new NameScreen();
+		name.setVisible(true);
 
 		return;
 	}
