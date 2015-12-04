@@ -14,13 +14,39 @@ import game.Square;
  * 
  * @author AlexKerzner
  *
+ * 
  */
 public class Board
 {
 	/**
 	 * The game's board.
+	 * 
+	 * @see Board
 	 */
-	private Square board[][] = new Square[3][3];
+	private Square	board[][]	= new Square[3][3];
+
+	/**
+	 * The number of moves, equal to the number of non-empty squares on the board.
+	 * 
+	 * @see Board
+	 */
+	private short		move_count;
+
+	/**
+	 * A boolean value that indicates the possibility of undo.
+	 * 
+	 * @see Board
+	 */
+	private boolean	undo_is_possible;
+
+	/**
+	 * A value representing the last move in location coordinates. This value is
+	 * not guaranteed to be initialized if {@link Board#undo_is_possible} is
+	 * false.
+	 * 
+	 * @see Board
+	 */
+	private short		last_move;
 
 	/**
 	 * Constructor for <code>Board</code> class.
@@ -32,6 +58,13 @@ public class Board
 		{
 			setSquare(i, Square.EMPTY);
 		}
+
+		// Set move count
+		move_count = 0;
+
+		// Disable undo
+		undo_is_possible = false;
+
 	}
 
 	/**
@@ -206,10 +239,36 @@ public class Board
 		return;
 	}
 
+	/**
+	 * Checks for a winner to the game. If the game is over, changes
+	 * {@link Board#game_over} to true.
+	 * 
+	 * Checks only the row, column, and diagonal (if along a diagonal) sets on the
+	 * board. Only checks either two or three sets of three values.
+	 * 
+	 * 
+	 * @return {@link Square#X} or {@link Square#O} indicating the winner of the
+	 *         game, or {@link Square#EMPTY} if a cats (tie) game or the game is
+	 *         not over
+	 * 
+	 * @author AlexKerzner
+	 */
+	private Square isGameOver()
+	{
+
+		switch (last_move)
+		{
+			case 1: // corner
+			default: // do nothing
+				break;
+		}
+		return Square.EMPTY;
+	}
+
 	public Square next(short location, Square square)
 		throws SquareNotEmpty, SquareOutOfBounds
 	{
-		// TODO isGameOver()
+		isGameOver();
 		return Square.EMPTY;
 	}
 
