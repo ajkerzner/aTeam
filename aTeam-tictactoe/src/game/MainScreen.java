@@ -322,7 +322,8 @@ public class MainScreen extends javax.swing.JFrame
 	private void
 		jMenuMainScreenAboutActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		new AboutScreen().setVisible(true);
+		AboutScreen about = new AboutScreen();
+		about.setVisible(true);
 	}
 
 

@@ -188,7 +188,8 @@ private void jTextFieldP1ActionPerformed(java.awt.event.ActionEvent evt) {
 }                                            
 
 private void jAboutActionPerformed(java.awt.event.ActionEvent evt) {                                       
-    new AboutScreen().setVisible(true);
+  AboutScreen about = new AboutScreen(); 
+	about.setVisible(true);
 }                                      
 
 
