@@ -47,8 +47,7 @@ public class NameScreen extends javax.swing.JFrame
     
     jLabelP1.setText("Player 1 Name:");
     
-    //Default name on startup
-    jTextFieldP1.setText("Player 1 Name");    
+    jTextFieldP1.setText(null);    
     
     //Action Listener for Player 1 Name input
     jTextFieldP1.addActionListener(new java.awt.event.ActionListener() {
@@ -65,8 +64,7 @@ public class NameScreen extends javax.swing.JFrame
 
     jLabelP2.setText("Player 2 Name:");
     
-    //Default name on startup
-    jTextFieldP2.setText("Player 2 Name");
+    jTextFieldP2.setText(null);
     
     //Action Listener for Player 2 Name Input
     jTextFieldP2.addActionListener(new java.awt.event.ActionListener() {

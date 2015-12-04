@@ -284,7 +284,9 @@ public class MainScreen extends javax.swing.JFrame
 
 	private void jMenuNewGameActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		dispose();
+		NameScreen nameMenu = new NameScreen();
+		nameMenu.setVisible(true);
 	}
 
 	private void jMenuExitActionPerformed(ActionEvent evt)
