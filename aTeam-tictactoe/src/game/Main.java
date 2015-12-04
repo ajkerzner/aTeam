@@ -4,6 +4,7 @@ public class Main
 {
 
 	// TODO COPIED VERBATIM FROM MainScreen.java
+	// TODO Move some code from main method back to MainScreen.java
 	/**
 	 * @param args
 	 *          the command line arguments
