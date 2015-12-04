@@ -5,6 +5,7 @@
 package game;
 
 import errors.SquareNotEmpty;
+import errors.SquareOutOfBounds;
 // Enumerated value representing each square
 import game.Square;
 
@@ -96,6 +97,12 @@ public class Board
 		return (short) (3 * (3 - row) + column);
 	}
 
+	public static boolean isOutOfBounds(short row, short column)
+	{
+		// true if either row or column are greater than 3 or less than 1.
+		return (row < 1) || (column < 1) || (row > 3) || (column > 3);
+	}
+
 	/**
 	 * Gets the square at location.
 	 * 
@@ -105,11 +112,14 @@ public class Board
 	 * 
 	 * @return a {@link Square}
 	 * 
+	 * @throws SquareOutOfBounds
+	 *           Square is out of bounds
+	 * 
 	 * @see Square
 	 * 
 	 * @see Board
 	 */
-	private Square getSquare(short location)
+	public Square getSquare(short location) throws SquareOutOfBounds
 	{
 		// Calls the equivalent method with alternate coordinates
 		return getSquare(getRow(location), getColumn(location));
@@ -127,13 +137,19 @@ public class Board
 	 * 
 	 * @return a {@link Square}
 	 * 
+	 * @throws SquareOutOfBounds
+	 *           Square is out of bounds
+	 * 
 	 * @see Square
 	 * 
 	 * @see Board
 	 */
-	private Square getSquare(short row, short column)
+	public Square getSquare(short row, short column) throws SquareOutOfBounds
 	{
-		// TODO Handle Out-of-bounds errors
+		if (isOutOfBounds(row, column))
+		{
+			throw new SquareOutOfBounds();
+		}
 		return board[row][column];
 	}
 
@@ -167,7 +183,6 @@ public class Board
 	 * @param column
 	 *          the column (1 being the left column, 3 being the right column) the
 	 *          square is in
-	 * 
 	 * @param square
 	 *          a {@link Square}
 	 * 
@@ -189,6 +204,13 @@ public class Board
 		}
 
 		return;
+	}
+
+	public Square next(short location, Square square)
+		throws SquareNotEmpty, SquareOutOfBounds
+	{
+		// TODO isGameOver()
+		return Square.EMPTY;
 	}
 
 }
