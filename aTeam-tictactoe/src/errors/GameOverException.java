@@ -5,17 +5,17 @@
 package errors;
 
 /**
- * <code>SquareOutOfBounds</code> is thrown when attempting to reference a
- * square not on the tic-tac-toe board.
+ * <code>GameOverException</code> is thrown when attempting to set the value of
+ * a square after the game has ended.
  * 
+ * @see SquareOutOfBounds
  * @see SquareNotEmpty
- * @see GameOverException
  * 
  * @see game.Board
  * 
  * @author AlexKerzner
  */
-public class SquareOutOfBounds extends RuntimeException
+public class GameOverException extends RuntimeException
 {
 
 	/**
@@ -24,12 +24,12 @@ public class SquareOutOfBounds extends RuntimeException
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with the default message: "Square out of bounds".
+	 * Constructor with the default message: "Game is over".
 	 * 
 	 */
-	public SquareOutOfBounds()
+	public GameOverException()
 	{
-		this("Square out of bounds");
+		this("Game is over");
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class SquareOutOfBounds extends RuntimeException
 	 * @param message
 	 *          the error message
 	 */
-	public SquareOutOfBounds(String message)
+	public GameOverException(String message)
 	{
 		super(message);
 	}

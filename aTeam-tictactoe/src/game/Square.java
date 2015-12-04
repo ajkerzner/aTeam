@@ -35,6 +35,16 @@ public enum Square
 	EMPTY;
 
 	/**
+	 * Checks if this Square is empty.
+	 * 
+	 * @return true, if this is equal to {@link Square#EMPTY}
+	 */
+	public boolean isEmpty()
+	{
+		return (this == EMPTY);
+	}
+
+	/**
 	 * Checks if A, B, and C are equal. If they are equal, the value of A is
 	 * returned. If they are not all equal, or if one is empty, then
 	 * {@link Square#EMPTY} is returned.
@@ -51,7 +61,7 @@ public enum Square
 	public static Square areEqualAndNotEmpty(Square A, Square B, Square C)
 	{
 		// If A is not empty
-		if (!A.equals(Square.EMPTY))
+		if (!A.isEmpty())
 		{
 			// If A equals B
 			if (A.equals(B))
