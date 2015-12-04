@@ -318,11 +318,10 @@ public class MainScreen extends javax.swing.JFrame
 	{
 		// TODO add your handling code here:
 	}
-
+	AboutScreen about = new AboutScreen();
 	private void
 		jMenuMainScreenAboutActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		AboutScreen about = new AboutScreen();
 		about.setVisible(true);
 	}
 

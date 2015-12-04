@@ -186,9 +186,8 @@ private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {
 private void jTextFieldP1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
     player1Name = jTextFieldP1.getText();
 }                                            
-
+	AboutScreen about = new AboutScreen(); 
 private void jAboutActionPerformed(java.awt.event.ActionEvent evt) {                                       
-  AboutScreen about = new AboutScreen(); 
 	about.setVisible(true);
 }                                      
 
