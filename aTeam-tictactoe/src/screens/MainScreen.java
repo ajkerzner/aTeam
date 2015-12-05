@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -46,7 +47,7 @@ public class MainScreen extends JFrame
 
 	protected Player					player_one;
 	protected Player					player_two;
-	protected Board						board;
+	protected Board						board							= new Board();
 
 	protected Square					game_winner				= Square.EMPTY;
 
@@ -65,7 +66,7 @@ public class MainScreen extends JFrame
 		super("aTeam Tic-Tac-Toe");
 
 		// Creates board
-		board = new Board();
+		// board = new Board();
 
 		// Set default close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,6 +95,15 @@ public class MainScreen extends JFrame
 			KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 		// Add mnemonic
 		menu_new_game.setMnemonic(KeyEvent.VK_N);
+		// Add action to call newGame()
+		menu_new_game.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				newGame();
+			}
+		});
 		// Add to File menu
 		menu_file.add(menu_new_game);
 
@@ -123,6 +133,22 @@ public class MainScreen extends JFrame
 
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
+
+		JButton[] buttons = new JButton[9];
+		for (int i = 1; i <= 9; i++)
+		{
+			buttons[i] = new JButton("Button " + i);
+			buttons[i].addActionListener(new ActionListener()
+			{
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					if ()
+					board.next(location, square)
+				}
+			};
+		}
 	}
 
 	/**
