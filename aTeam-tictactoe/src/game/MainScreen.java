@@ -87,137 +87,137 @@ public class MainScreen extends javax.swing.JFrame
         
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton2MouseClicked(evt);
             }
         });
         
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
         jButton2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton2KeyPressed(evt);
             }
         });     
         
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton3MouseClicked(evt);
             }
         });
         
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
         jButton3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton3KeyPressed(evt);
             }
         });  
         
         jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton4MouseClicked(evt);
             }
         });
         
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
         jButton4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton4KeyPressed(evt);
             }
         });  
         
         jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton5MouseClicked(evt);
             }
         });
         
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton5ActionPerformed(evt);
             }
         });
         jButton5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton5KeyPressed(evt);
             }
         });  
         
         jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton6MouseClicked(evt);
             }
         });
         
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton6ActionPerformed(evt);
             }
         });
         jButton6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton6KeyPressed(evt);
             }
         });  
         
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton7MouseClicked(evt);
             }
         });
         
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton7ActionPerformed(evt);
             }
         });
         jButton7.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton7KeyPressed(evt);
             }
         });  
         
         jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton8MouseClicked(evt);
             }
         });
         
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton8ActionPerformed(evt);
             }
         });
         jButton8.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton8KeyPressed(evt);
             }
         });  
         
         jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
         	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton9MouseClicked(evt);
             }
         });
         
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton9ActionPerformed(evt);
             }
         });
         jButton9.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
+                jButton9KeyPressed(evt);
             }
         });  
         
@@ -231,35 +231,18 @@ public class MainScreen extends javax.swing.JFrame
         
         jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton2KeyPressed(evt);
-            }
-        });
-
         jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton3.setPreferredSize(new java.awt.Dimension(75, 75));
-
         jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton4.setPreferredSize(new java.awt.Dimension(75, 75));
-
         jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton5.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton6.setPreferredSize(new java.awt.Dimension(75, 75));
-
         jButton7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton7.setPreferredSize(new java.awt.Dimension(75, 75));
-
         jButton8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton8.setPreferredSize(new java.awt.Dimension(75, 75));
-
         jButton9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton9.setPreferredSize(new java.awt.Dimension(75, 75));
 
@@ -433,147 +416,156 @@ public class MainScreen extends javax.swing.JFrame
 		System.exit(0);
 	}
 
+	/*
+	 * Each jButton will do the following for their ActionListener
+	 * Changes the enumerated value to X or O, depending on whose turn it was
+	 * Checks for victory conditions
+	 * If the victory conditions are met, the game ends and the winner screen loads
+	 * If not, the next player's turn goes
+	 * The button is then set to not be editable.
+	 */
+
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton1.setEnabled(false);
 	}
 
 	private void jButton1KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton1.setEnabled(false);
 	}
 
 	private void jButton1MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton1.setEnabled(false);
 	}
 
 	
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton2.setEnabled(false);
 	}
 
 	private void jButton2KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton2.setEnabled(false);
 	}
 
 	private void jButton2MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton2.setEnabled(false);
 	}
 	
 	
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton3.setEnabled(false);
 	}
 
 	private void jButton3KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton3.setEnabled(false);
 	}
 
 	private void jButton3MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton3.setEnabled(false);
 	}
 	
 	
 	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton4.setEnabled(false);
 	}
 
 	private void jButton4KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton4.setEnabled(false);
 	}
 
 	private void jButton4MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton4.setEnabled(false);
 	}
 	
 	
 	private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton5.setEnabled(false);
 	}
 
 	private void jButton5KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton5.setEnabled(false);
 	}
 
 	private void jButton5MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton5.setEnabled(false);
 	}
 	
 	
 	private void jButton6ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton6.setEnabled(false);
 	}
 
 	private void jButton6KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton6.setEnabled(false);
 	}
 
 	private void jButton6MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton6.setEnabled(false);
 	}
 	
 	
 	private void jButton7ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton7.setEnabled(false);
 	}
 
 	private void jButton7KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton7.setEnabled(false);
 	}
 
 	private void jButton7MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton7.setEnabled(false);
 	}
 	
 	
 	private void jButton8ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton8.setEnabled(false);
 	}
 
 	private void jButton8KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton8.setEnabled(false);
 	}
 
 	private void jButton8MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton8.setEnabled(false);
 	}
 	
 	
 	private void jButton9ActionPerformed(java.awt.event.ActionEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton9.setEnabled(false);
 	}
 
 	private void jButton9KeyPressed(java.awt.event.KeyEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton9.setEnabled(false);
 	}
 
 	private void jButton9MouseClicked(java.awt.event.MouseEvent evt)
 	{
-		// TODO add your handling code here:
+		jButton9.setEnabled(false);
 	}
 	
 	
