@@ -67,11 +67,13 @@ public class MainScreen extends javax.swing.JFrame
 
         jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton1.setPreferredSize(new java.awt.Dimension(75, 75));
+        
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
             }
         });
+        
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -82,6 +84,143 @@ public class MainScreen extends javax.swing.JFrame
                 jButton1KeyPressed(evt);
             }
         });
+        
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });     
+        
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
+        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+        	public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jButton9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });  
+        
         
         jMenuExit.addActionListener(new java.awt.event.ActionListener() {
           public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -309,15 +448,136 @@ public class MainScreen extends javax.swing.JFrame
 		// TODO add your handling code here:
 	}
 
+	
+	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
 	private void jButton2KeyPressed(java.awt.event.KeyEvent evt)
 	{
 		// TODO add your handling code here:
 	}
 
+	private void jButton2MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton3KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton3MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton4KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton4MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
 	private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)
 	{
 		// TODO add your handling code here:
 	}
+
+	private void jButton5KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton5MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	private void jButton6ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton6KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton6MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	private void jButton7ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton7KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton7MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	private void jButton8ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton8KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton8MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	private void jButton9ActionPerformed(java.awt.event.ActionEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton9KeyPressed(java.awt.event.KeyEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+
+	private void jButton9MouseClicked(java.awt.event.MouseEvent evt)
+	{
+		// TODO add your handling code here:
+	}
+	
+	
+	
 	AboutScreen about = new AboutScreen();
 	private void
 		jMenuMainScreenAboutActionPerformed(java.awt.event.ActionEvent evt)
