@@ -25,17 +25,14 @@ package game;
  */
 public class Player
 {
-	/**
-	 * Player name
-	 */
+	
+	//Player name
 	private String	name;
-	/**
-	 * Player score
-	 */
+	
+	//Player score
 	private int			score;
-	/**
-	 * Player's total number of games played.
-	 */
+	
+	//Player's total number of games played.
 	private int			games_played;
 
 	/**
