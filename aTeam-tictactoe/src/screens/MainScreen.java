@@ -9,6 +9,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -348,11 +349,32 @@ public class MainScreen extends JFrame
 		// Set default size
 		setSize(1280, 720);
 
+		// Center MainScreen on screen
 		this.setLocationRelativeTo(null);
+
 		this.setVisible(true);
 
 		// Creates new game
 		newGame(true);
+	}
+
+	public boolean updateTurnIndicator()
+	{
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				current_turn.setText("" + player_one.getName() + "'s turn");
+				break;
+			case PLAYER_TWO:
+				current_turn.setText("" + player_two.getName() + "'s turn");
+				break;
+			case NO_PLAYERS:
+			default:
+				current_turn.setText("Please start a new game");
+				break;
+
+		}
+		return true;
 	}
 
 	public boolean move(int location)
@@ -404,20 +426,7 @@ public class MainScreen extends JFrame
 			buttons[location - 1].setEnabled(false);
 		}
 
-		switch (turn)
-		{
-			case PLAYER_ONE:
-				current_turn.setText("" + player_one.getName() + "'s turn");
-				break;
-			case PLAYER_TWO:
-				current_turn.setText("" + player_two.getName() + "'s turn");
-				break;
-			case NO_PLAYERS:
-			default:
-				current_turn.setText("Please start a new game");
-				break;
-
-		}
+		updateTurnIndicator();
 		return true;
 	}
 
@@ -434,27 +443,35 @@ public class MainScreen extends JFrame
 
 	protected String[] getPlayerNames()
 	{
-		Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
+		final String player_name_tooltip = "Names must be between 1 and 15 letters";
+		final Font font = new Font(Font.MONOSPACED, Font.PLAIN, 15);
 
 		// Message panel
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(new GridLayout(0, 2));
 
-		JLabel label_one = new JLabel("Player 1: ");
+		JLabel label_one = new JLabel("Player 1 Name: ");
 		label_one.setFont(font);
 		panel.add(label_one);
-		JTextField text_field_one = new JTextField("", 15);
+		JTextField text_field_one = new JTextField("Player 1", 15);
 		text_field_one.setFont(font);
-		text_field_one.grabFocus();
+		text_field_one.setToolTipText(player_name_tooltip);
 		panel.add(text_field_one);
 
-		panel.add(new JSeparator(SwingConstants.HORIZONTAL));
+		for (int i = 0; i < 2; i++)
+		{
+			JLabel separator = new JLabel("---------------");
+			separator.setFont(font);
+			panel.add(separator);
+		}
 
-		JLabel label_two = new JLabel("Player 2: ");
+		JLabel label_two = new JLabel("Player 2 Name: ");
 		label_two.setFont(font);
 		panel.add(label_two);
-		JTextField text_field_two = new JTextField("", 15);
+		JTextField text_field_two = new JTextField("Player 2", 15);
 		text_field_two.setFont(font);
+		text_field_one.setToolTipText(player_name_tooltip);
 		panel.add(text_field_two);
+
 		int result = JOptionPane.CANCEL_OPTION;
 		String player_names[];
 		// Ask for player names
@@ -462,7 +479,7 @@ public class MainScreen extends JFrame
 		{
 			if (result == JOptionPane.OK_OPTION)
 			{
-				JOptionPane.showMessageDialog(panel,
+				JOptionPane.showMessageDialog(this.getContentPane(),
 					"Please type in a name for both players, 1 to 15 characters",
 					"Name Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -501,17 +518,28 @@ public class MainScreen extends JFrame
 	protected void newGame(boolean get_new_players)
 	{
 		board = new Board();
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				turn = Turn.PLAYER_TWO;
+				break;
+			case PLAYER_TWO:
+				turn = Turn.PLAYER_ONE;
+				break;
+			case NO_PLAYERS:
+			default:
+				break;
+		}
 		// Get player names, if applicable
 		if (get_new_players)
 		{
 			// Call NameScreen
-			String[] player_names =
-				{ "Player 1", "Player 2" };
+			String[] player_names = new String[2];
 			player_names = getPlayerNames();
 			if (player_names.length != 2)
 			{
-				// TODO Handle error
-				System.out.println("Error");
+				player_names[0] = "Player 1";
+				player_names[1] = "Player 2";
 			}
 			player_one = new Player(player_names[0]);
 			player_two = new Player(player_names[1]);
@@ -542,6 +570,12 @@ public class MainScreen extends JFrame
 			button.setText("");
 		}
 
+		updateTurnIndicator();
+	}
+
+	protected void updateScore()
+	{
+		// TODO update score
 	}
 
 	protected void undo()
@@ -577,7 +611,7 @@ public class MainScreen extends JFrame
 
 			}
 			menu_undo.setEnabled(false);
-			;
+			updateTurnIndicator();
 			return;
 		}
 	}
@@ -592,22 +626,16 @@ public class MainScreen extends JFrame
 
 	public static void main(String[] args)
 	{
-
-		// See
-		// https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html#programmatic
-		// for how to do this
-
-		// Warning: this is close to example code.
 		try
 		{
 			// Set System Look and Feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
-		catch (UnsupportedLookAndFeelException error)
+		catch (ClassNotFoundException error)
 		{
 			error.printStackTrace();
 		}
-		catch (ClassNotFoundException error)
+		catch (IllegalAccessException error)
 		{
 			error.printStackTrace();
 		}
@@ -615,7 +643,7 @@ public class MainScreen extends JFrame
 		{
 			error.printStackTrace();
 		}
-		catch (IllegalAccessException error)
+		catch (UnsupportedLookAndFeelException error)
 		{
 			error.printStackTrace();
 		}
