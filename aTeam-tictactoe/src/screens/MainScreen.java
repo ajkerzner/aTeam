@@ -12,13 +12,13 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import errors.GameOverException;
 import game.Board;
 import game.Player;
 import game.Square;
@@ -65,6 +65,10 @@ public class MainScreen extends JFrame
 	JPanel										panel;
 	GridLayout								grid;
 	JButton[]									buttons;
+	JLabel[]									player_names;
+
+	// Here's a video on java programming that may be helpful:
+	// https://youtu.be/dQw4w9WgXcQ
 
 	/**
 	 * 
@@ -74,9 +78,6 @@ public class MainScreen extends JFrame
 
 		// Set title
 		super("aTeam Tic-Tac-Toe");
-
-		// Creates board
-		board = new Board();
 
 		// Set default close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -125,6 +126,21 @@ public class MainScreen extends JFrame
 			buttons[i].setEnabled(false);
 			panel.add(buttons[i]);
 		}
+
+		// Creates new game
+		newGame(true);
+		// Create labels
+		player_names = new JLabel[2];
+
+		player_names[0] = new JLabel();
+		player_names[0].setText("X - " + player_one.getName());
+		player_names[0].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
+		add(player_names[0], BorderLayout.WEST);
+
+		player_names[1] = new JLabel();
+		player_names[1].setText("O - " + player_two.getName());
+		player_names[1].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
+		add(player_names[1], BorderLayout.EAST);
 
 		// Create Menu Bar
 		JMenuBar menu_bar = new JMenuBar();
@@ -236,8 +252,12 @@ public class MainScreen extends JFrame
 		// Add Help to menu bar
 		menu_bar.add(menu_help);
 
+		// Sets the menu bar
 		this.setJMenuBar(menu_bar);
 
+		// https://youtu.be/dQw4w9WgXcQ
+
+		// Prevents evil location placement.
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
 	}
@@ -245,39 +265,41 @@ public class MainScreen extends JFrame
 	public boolean move(int location)
 	{
 		Square this_move = Square.EMPTY;
-		Square next_move = Square.EMPTY;
 		String player = "";
 		switch (turn)
 		{
 			case PLAYER_ONE:
 				player = "X";
 				this_move = Square.X;
-				next_move = Square.O;
 				turn = Turn.PLAYER_TWO;
 				break;
 			case PLAYER_TWO:
 				player = "O";
 				this_move = Square.O;
-				next_move = Square.X;
 				turn = Turn.PLAYER_ONE;
 				break;
 			case NO_PLAYERS:
 			default:
-				player = null;
+				player = "";
 				this_move = Square.EMPTY;
-				next_move = Square.EMPTY;
 				turn = Turn.NO_PLAYERS;
 				break;
 		}
+		// Update button
+		buttons[location - 1].setText(player);
+
 		if (board.next(location, this_move))
 		{
 			// Game is over
-			buttons[location - 1].setText(player);
-			game_winner = board.getWinner();
+			game_winner = board.getLastPlayer();
 			turn = Turn.NO_PLAYERS;
 			for (JButton button : buttons)
 			{
 				button.setEnabled(false);
+			}
+			if (game_winner.isEmpty())
+			{
+				player = "no one";
 			}
 			System.out.println("Game was won by " + player);
 			return true;
@@ -285,7 +307,6 @@ public class MainScreen extends JFrame
 		else
 		{
 			buttons[location - 1].setEnabled(false);
-			buttons[location - 1].setText(player);
 		}
 
 		return true;
@@ -336,7 +357,25 @@ public class MainScreen extends JFrame
 
 	protected void undo()
 	{
-		System.out.println("Undo");
+		// System.out.println("Undo");
+
+		if (board.isUndoPossible())
+		{
+			// Undo is possible
+			int result = board.undo();
+			if (result <= 0)
+			{
+				// ERROR
+				// This shouldn't be reached. The isUndoPossible() should prevent this
+				// from happening.
+			}
+			else
+			{
+				buttons[result - 1].setEnabled(true);
+				buttons[result - 1].setText("");
+			}
+			return;
+		}
 	}
 
 	protected void about()

@@ -261,7 +261,7 @@ public class Board
 	 */
 	private void setSquare(int row, int column, Square square)
 	{
-		if (getSquare(row, column).isEmpty())
+		if (getSquare(row, column).isEmpty() || square.isEmpty())
 		{
 			// Square is empty
 			board[row - 1][column - 1] = square;
@@ -269,10 +269,12 @@ public class Board
 		else
 		{
 			// Square is not empty
+			// Throw error
 			throw new SquareNotEmpty();
 		}
 
 		return;
+
 	}
 
 	/**
@@ -419,11 +421,11 @@ public class Board
 	/**
 	 * Undo a move, if possible.
 	 * 
-	 * @return true, if a move was undone; otherwise, false
+	 * @return the location of the move undone, or -1 if not undone.
 	 * 
 	 * @see Board
 	 */
-	public boolean undo()
+	public int undo()
 	{
 		if (undo_is_possible)
 		{
@@ -433,33 +435,30 @@ public class Board
 			// Undo the last move
 			setSquare(last_move, Square.EMPTY);
 
+			// Sets a temporary value
+			int temp = last_move;
+
 			// Reset the last move indicator
 			last_move = 0;
 
 			// Last move undone
-			return true;
+			return temp;
 		}
 		// No move undone
-		return false;
+		return -1;
 	}
 
 	/**
-	 * Returns the winner of the game. If the game is not over, returns null.
+	 * Returns the winner of the game, if the game is over. If the game is not
+	 * over, returns the last player to move.
 	 * 
 	 * @return a {@link Square}
 	 * 
 	 * @see Board
 	 */
-	public Square getWinner()
+	public Square getLastPlayer()
 	{
-		if (game_over)
-		{
-			return game_winner;
-		}
-		else
-		{
-			return null;
-		}
+		return game_winner;
 	}
 
 	/**
