@@ -720,17 +720,13 @@ public class MainScreen extends JFrame
 
 	protected void undo()
 	{
-		// System.out.println("Undo");
-
 		if (board.isUndoPossible())
 		{
 			// Undo is possible
 			int result = board.undo();
 			if (result <= 0)
 			{
-				// ERROR
-				// This shouldn't be reached. The isUndoPossible() should prevent this
-				// from happening.
+				// Unknown error
 			}
 			else
 			{
@@ -760,9 +756,13 @@ public class MainScreen extends JFrame
 
 	protected void about()
 	{
-		// System.out.println("About screen will have opened.");
+		String about_text = "<html><center>" + "<H2>Written by aTeam</H2>"
+			+ "<H3>Benjamin Dodson<br>Ronnie Drescher<br>"
+			+ "Walter Goerling<br>Alexander Kerzner<br>Joseph Miller</H3>"
+			+ "<br><b>Tic-Tac-Toe version 1.0</b></center></html>";
+		JOptionPane.showMessageDialog(getParent(), about_text, "About Tic-Tac-Toe",
+			JOptionPane.INFORMATION_MESSAGE);
 
-		about.setVisible(true);
 	}
 
 	public static void main(String[] args)
