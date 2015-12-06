@@ -5,6 +5,8 @@ package screens;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -346,7 +348,7 @@ public class MainScreen extends JFrame
 		// Set default size
 		setSize(1280, 720);
 
-		this.setLocationByPlatform(true);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 
 		// Creates new game
@@ -442,6 +444,7 @@ public class MainScreen extends JFrame
 		panel.add(label_one);
 		JTextField text_field_one = new JTextField("", 15);
 		text_field_one.setFont(font);
+		text_field_one.grabFocus();
 		panel.add(text_field_one);
 
 		panel.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -463,7 +466,7 @@ public class MainScreen extends JFrame
 					"Please type in a name for both players, 1 to 15 characters",
 					"Name Error", JOptionPane.ERROR_MESSAGE);
 			}
-			result = JOptionPane.showConfirmDialog(getParent(), panel,
+			result = JOptionPane.showConfirmDialog(this.getContentPane(), panel,
 				"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
 
 			player_names = new String[2];
