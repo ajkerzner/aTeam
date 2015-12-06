@@ -4,15 +4,17 @@
 package screens;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import game.Board;
 import game.Player;
@@ -66,7 +68,6 @@ public class MainScreen extends JFrame
 		super("aTeam Tic-Tac-Toe");
 
 		// Creates board
-		// board = new Board();
 
 		// Set default close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,6 +78,56 @@ public class MainScreen extends JFrame
 		// Set layout
 		BorderLayout layout = new BorderLayout();
 		setLayout(layout);
+
+		GridLayout grid = new GridLayout(3, 3);
+		JPanel panel = new JPanel();
+		panel.setLayout(grid);
+		add(panel, BorderLayout.CENTER);
+		JButton[] buttons = new JButton[9];
+		// GridLayout.;
+		final int[] order =
+			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
+		final int[] keys =
+			{ KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
+				KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
+				KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
+		for (int i : order)
+		{
+			i = i - 1;
+			buttons[i] = new JButton(Integer.toString(i + 1));
+			buttons[i].addActionListener(new ActionListener()
+			{
+				@Override
+				public void actionPerformed(ActionEvent event)
+				{
+
+					if (turn == Turn.NO_PLAYERS)
+					{
+						// Do nothing
+						// Game not in progress.
+					}
+					else if (turn == Turn.PLAYER_ONE)
+					{
+						// Moves for player two
+						board.next(
+							Integer.valueOf(((JButton) event.getSource()).getName()) + 1,
+							Square.X);
+					}
+					else if (turn == Turn.PLAYER_TWO)
+					{
+						// Moves for player two
+						board.next(
+							Integer.valueOf(((JButton) event.getSource()).getName()) + 1,
+							Square.O);
+					}
+
+				}
+			});
+			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(keys[i], 0), buttons[i].getAction());
+
+			panel.add(buttons[i]);
+		}
 
 		// Create Menu Bar
 		JMenuBar menu_bar = new JMenuBar();
@@ -98,6 +149,7 @@ public class MainScreen extends JFrame
 		// Add action to call newGame()
 		menu_new_game.addActionListener(new ActionListener()
 		{
+
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
@@ -133,22 +185,6 @@ public class MainScreen extends JFrame
 
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
-
-		JButton[] buttons = new JButton[9];
-		for (int i = 1; i <= 9; i++)
-		{
-			buttons[i] = new JButton("Button " + i);
-			buttons[i].addActionListener(new ActionListener()
-			{
-				
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					if ()
-					board.next(location, square)
-				}
-			};
-		}
 	}
 
 	/**

@@ -4,6 +4,8 @@
 
 package game;
 
+import java.util.Arrays;
+
 import errors.GameOverException;
 import errors.SquareNotEmpty;
 import errors.SquareOutOfBounds;
@@ -69,9 +71,9 @@ public class Board
 	public Board()
 	{
 		// Clear board
-		for (int i = 1; i <= 9; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			setSquare(i, Square.EMPTY);
+			Arrays.fill(board[i], Square.EMPTY);
 		}
 
 		// Set move count
@@ -124,7 +126,7 @@ public class Board
 	 */
 	public static int getColumn(int location)
 	{
-		return ((location - 1) % 3);
+		return ((location - 1) % 3) + 1;
 	}
 
 	/**
@@ -215,9 +217,9 @@ public class Board
 	{
 		if (isOutOfBounds(row, column))
 		{
-			throw new SquareOutOfBounds();
+			throw new SquareOutOfBounds("Row: " + row + ", Column: " + column);
 		}
-		return board[row][column];
+		return board[row - 1][column - 1];
 	}
 
 	/**
@@ -262,7 +264,7 @@ public class Board
 		if (getSquare(row, column).isEmpty())
 		{
 			// Square is empty
-			board[row][column] = square;
+			board[row - 1][column - 1] = square;
 		}
 		else
 		{
