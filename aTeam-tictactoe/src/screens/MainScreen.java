@@ -235,7 +235,7 @@ public class MainScreen extends JFrame
 
 		// Create Edit menu
 		menu_edit = new JMenu("Edit");
-		menu_file.setMnemonic(KeyEvent.VK_E);
+		menu_edit.setMnemonic(KeyEvent.VK_E);
 
 		/**
 		 * Create Edit->Undo menu item
@@ -400,10 +400,11 @@ public class MainScreen extends JFrame
 			// Call NameScreen
 			String[] player_names =
 				{ "Player 1", "Player 2" };
-			// String[] player_names = NameScreen.getPlayerNames();
+			// player_names = NameScreen.getPlayerNames();
 			if (player_names.length != 2)
 			{
 				// TODO Handle error
+				System.out.println("Error");
 			}
 			player_one = new Player(player_names[0]);
 			player_two = new Player(player_names[1]);
