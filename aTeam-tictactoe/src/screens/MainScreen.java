@@ -242,6 +242,49 @@ public class MainScreen extends JFrame
 
 	public boolean move(int location)
 	{
+		Square this_move = Square.EMPTY;
+		Square next_move = Square.EMPTY;
+		String player = "";
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				player = "X";
+				this_move = Square.X;
+				next_move = Square.O;
+				turn = Turn.PLAYER_TWO;
+				break;
+			case PLAYER_TWO:
+				player = "O";
+				this_move = Square.O;
+				next_move = Square.X;
+				turn = Turn.PLAYER_ONE;
+				break;
+			case NO_PLAYERS:
+			default:
+				player = null;
+				this_move = Square.EMPTY;
+				next_move = Square.EMPTY;
+				turn = Turn.NO_PLAYERS;
+				break;
+		}
+		if (board.next(location, this_move))
+		{
+			// Game is over
+			game_winner = board.getWinner();
+			turn = Turn.NO_PLAYERS;
+			for (JButton button : buttons)
+			{
+				button.setEnabled(false);
+			}
+			System.out.println("Game was won by " + player);
+			return true;
+		}
+		else
+		{
+			buttons[location - 1].setEnabled(false);
+			buttons[location - 1].setText(player);
+		}
+
 		return true;
 	}
 

@@ -191,7 +191,7 @@ public class Board
 	public Square getSquare(int location) throws SquareOutOfBounds
 	{
 		// Calls the equivalent method
-		return getSquare(location);
+		return getSquare(getRow(location), getColumn(location));
 	}
 
 	/**
