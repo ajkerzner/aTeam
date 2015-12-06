@@ -6,6 +6,7 @@ package screens;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 /**
@@ -34,13 +35,17 @@ public class NameScreen
 		panel.add(label_one);
 		JTextField text_field_one = new JTextField("Player 1", 15);
 		panel.add(text_field_one);
+
+		panel.add(new JSeparator());
+
 		JLabel label_two = new JLabel("Player 2: ");
 		panel.add(label_two);
 		JTextField text_field_two = new JTextField("Player 2", 15);
 		panel.add(text_field_two);
-
+		int result;
 		// Ask for player names
-		int result = JOptionPane.showConfirmDialog(null, panel,
+		// TODO do.. while loop -> repeat prompt if a player name is the wrong size.
+		result = JOptionPane.showConfirmDialog(null, panel,
 			"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
 
 		String[] player_names = new String[2];
@@ -52,9 +57,7 @@ public class NameScreen
 		}
 		else
 		{
-			System.out.println("Error - Cancel selected");
-			player_names[0] = "Player 1";
-			player_names[1] = "Player 2";
+			System.exit(0);
 		}
 		return player_names;
 

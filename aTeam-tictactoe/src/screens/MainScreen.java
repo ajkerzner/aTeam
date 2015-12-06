@@ -105,6 +105,10 @@ public class MainScreen extends JFrame
 		layout = new BorderLayout(20, 20);
 		setLayout(layout);
 
+		// Create temporary players
+		player_one = new Player();
+		player_two = new Player();
+
 		// For inspiration, see
 		// http://stackoverflow.com/questions/16075022/making-a-jpanel-square
 		panel = new JPanel();
@@ -294,8 +298,6 @@ public class MainScreen extends JFrame
 		// Sets the menu bar
 		this.setJMenuBar(menu_bar);
 
-		// Creates new game
-		newGame(true);
 		// Create labels
 		player_names = new JLabel[2];
 
@@ -316,6 +318,9 @@ public class MainScreen extends JFrame
 
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
+
+		// Creates new game
+		newGame(true);
 	}
 
 	public boolean move(int location)
@@ -409,6 +414,9 @@ public class MainScreen extends JFrame
 			}
 			player_one = new Player(player_names[0]);
 			player_two = new Player(player_names[1]);
+			this.player_names[0].setText(player_one.getName());
+			this.player_names[1].setText(player_two.getName());
+
 		}
 
 		turn = Turn.PLAYER_ONE;
@@ -461,9 +469,10 @@ public class MainScreen extends JFrame
 	}
 
 	AboutScreen about = new AboutScreen();
+
 	protected void about()
 	{
-		//System.out.println("About screen will have opened.");
+		// System.out.println("About screen will have opened.");
 		about.setVisible(true);
 	}
 
