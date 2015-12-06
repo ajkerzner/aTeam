@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -76,8 +77,10 @@ public class MainScreen extends JFrame
 	BorderLayout							layout;
 	JPanel										panel;
 	GridBagLayout							grid;
-	JButton[]									buttons;
+	JPanel[]									player_panels;
 	JLabel[]									player_names;
+	JLabel[]									player_scores;
+	JButton[]									buttons;
 	JMenuBar									menu_bar;
 	JMenu											menu_file;
 	JMenuItem									menu_new_game;
@@ -113,8 +116,9 @@ public class MainScreen extends JFrame
 		player_one = new Player("               ");
 		player_two = new Player("               ");
 
-		// For inspiration, see
-		// http://stackoverflow.com/questions/16075022/making-a-jpanel-square
+		player_names = new JLabel[2];
+		player_scores = new JLabel[2];
+
 		panel = new JPanel();
 		// panel.setSize(100, 100);
 
@@ -302,20 +306,37 @@ public class MainScreen extends JFrame
 		// Sets the menu bar
 		this.setJMenuBar(menu_bar);
 
-		// Create labels
-		player_names = new JLabel[2];
+		// Create player panels
+		JPanel[] player_panels = new JPanel[2];
+		final String[] locations =
+			{ BorderLayout.WEST, BorderLayout.EAST };
+		final String[] symbols =
+			{ "X - ", "O - " };
+		Player[] players =
+			{ player_one, player_two };
+		final Font panel_font = new Font(Font.MONOSPACED, Font.PLAIN, 24);
+		for (int i = 0; i < 2; i++)
+		{
+			// Create panel
+			player_panels[i] = new JPanel();
+			player_panels[i].setLayout(new BorderLayout(5, 5));
 
-		player_names[0] = new JLabel();
-		player_names[0].setText("X - " + player_one.getName());
-		player_names[0].setFont(new Font(Font.MONOSPACED, Font.PLAIN, 38));
-		add(player_names[0], BorderLayout.WEST);
+			// Add player name
+			JLabel name = new JLabel(symbols[i] + players[i].getName());
+			name.setFont(panel_font);
+			player_names[i] = name;
+			player_panels[i].add(name, BorderLayout.NORTH);
 
-		player_names[1] = new JLabel();
-		player_names[1].setText("O - " + player_two.getName());
-		player_names[1].setFont(new Font(Font.MONOSPACED, Font.PLAIN, 38));
-		add(player_names[1], BorderLayout.EAST);
+			// Add player name
+			JLabel score = new JLabel("Score: " + players[i].getScore());
+			score.setFont(panel_font);
+			player_scores[i] = score;
+			player_panels[i].add(score, BorderLayout.CENTER);
 
-		// https://youtu.be/dQw4w9WgXcQ
+			// Add panel
+			add(player_panels[i], locations[i]);
+
+		}
 
 		// Set default size
 		setSize(1280, 720);
@@ -484,6 +505,7 @@ public class MainScreen extends JFrame
 				// append " " to name
 				player_two_name = player_two_name + " ";
 			}
+
 			this.player_names[0].setText("X - " + player_one_name);
 			this.player_names[1].setText("O - " + player_two_name);
 
