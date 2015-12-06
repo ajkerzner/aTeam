@@ -441,6 +441,9 @@ public class Board
 			// Reset the last move indicator
 			last_move = 0;
 
+			// Decrement move counter
+			move_count = move_count - 1;
+
 			// Last move undone
 			return temp;
 		}

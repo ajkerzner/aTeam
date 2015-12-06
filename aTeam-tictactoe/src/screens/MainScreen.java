@@ -66,6 +66,14 @@ public class MainScreen extends JFrame
 	GridLayout								grid;
 	JButton[]									buttons;
 	JLabel[]									player_names;
+	JMenuBar									menu_bar;
+	JMenu											menu_file;
+	JMenuItem									menu_new_game;
+	JMenuItem									menu_exit;
+	JMenu											menu_edit;
+	JMenuItem									menu_undo;
+	JMenu											menu_help;
+	JMenuItem									menu_about;
 
 	// Here's a video on java programming that may be helpful:
 	// https://youtu.be/dQw4w9WgXcQ
@@ -127,33 +135,18 @@ public class MainScreen extends JFrame
 			panel.add(buttons[i]);
 		}
 
-		// Creates new game
-		newGame(true);
-		// Create labels
-		player_names = new JLabel[2];
-
-		player_names[0] = new JLabel();
-		player_names[0].setText("X - " + player_one.getName());
-		player_names[0].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
-		add(player_names[0], BorderLayout.WEST);
-
-		player_names[1] = new JLabel();
-		player_names[1].setText("O - " + player_two.getName());
-		player_names[1].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
-		add(player_names[1], BorderLayout.EAST);
-
 		// Create Menu Bar
-		JMenuBar menu_bar = new JMenuBar();
+		menu_bar = new JMenuBar();
 
 		// Create File menu
-		JMenu menu_file = new JMenu("File");
+		menu_file = new JMenu("File");
 		menu_file.setMnemonic(KeyEvent.VK_F);
 		// KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.ALT_MASK));
 
 		/**
 		 * Create File->New_Game menu item
 		 */
-		JMenuItem menu_new_game = new JMenuItem("New Game");
+		menu_new_game = new JMenuItem("New Game");
 		// Add keyboard shortcut
 		menu_new_game.setAccelerator(
 			KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
@@ -175,7 +168,7 @@ public class MainScreen extends JFrame
 		/**
 		 * Create File->Exit menu item
 		 */
-		JMenuItem menu_exit = new JMenuItem("Exit");
+		menu_exit = new JMenuItem("Exit");
 		// Add keyboard shortcut
 		menu_exit.setAccelerator(
 			KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
@@ -196,13 +189,13 @@ public class MainScreen extends JFrame
 		menu_bar.add(menu_file);
 
 		// Create Edit menu
-		JMenu menu_edit = new JMenu("Edit");
+		menu_edit = new JMenu("Edit");
 		menu_file.setMnemonic(KeyEvent.VK_E);
 
 		/**
 		 * Create Edit->Undo menu item
 		 */
-		JMenuItem menu_undo = new JMenuItem("Undo");
+		menu_undo = new JMenuItem("Undo");
 		// Add keyboard shortcut
 		menu_undo.setAccelerator(
 			KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
@@ -224,13 +217,13 @@ public class MainScreen extends JFrame
 		menu_bar.add(menu_edit);
 
 		// Create Help menu
-		JMenu menu_help = new JMenu("Help");
+		menu_help = new JMenu("Help");
 		menu_help.setMnemonic(KeyEvent.VK_H);
 
 		/**
 		 * Create Help->About menu item
 		 */
-		JMenuItem menu_about = new JMenuItem("About");
+		menu_about = new JMenuItem("About");
 		// Add keyboard shortcut
 		menu_about.setAccelerator(
 			KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
@@ -254,6 +247,21 @@ public class MainScreen extends JFrame
 
 		// Sets the menu bar
 		this.setJMenuBar(menu_bar);
+
+		// Creates new game
+		newGame(true);
+		// Create labels
+		player_names = new JLabel[2];
+
+		player_names[0] = new JLabel();
+		player_names[0].setText("X - " + player_one.getName());
+		player_names[0].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
+		add(player_names[0], BorderLayout.WEST);
+
+		player_names[1] = new JLabel();
+		player_names[1].setText("O - " + player_two.getName());
+		player_names[1].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
+		add(player_names[1], BorderLayout.EAST);
 
 		// https://youtu.be/dQw4w9WgXcQ
 
@@ -306,6 +314,7 @@ public class MainScreen extends JFrame
 		}
 		else
 		{
+			menu_undo.setEnabled(true);
 			buttons[location - 1].setEnabled(false);
 		}
 
@@ -346,6 +355,7 @@ public class MainScreen extends JFrame
 		}
 
 		turn = Turn.PLAYER_ONE;
+		menu_undo.setEnabled(false);
 
 		for (JButton button : buttons)
 		{
@@ -373,7 +383,22 @@ public class MainScreen extends JFrame
 			{
 				buttons[result - 1].setEnabled(true);
 				buttons[result - 1].setText("");
+				switch (turn)
+				{
+					case PLAYER_ONE:
+						turn = Turn.PLAYER_TWO;
+						break;
+					case PLAYER_TWO:
+						turn = Turn.PLAYER_ONE;
+						break;
+					case NO_PLAYERS:
+					default:
+						break;
+				}
+
 			}
+			menu_undo.setEnabled(false);
+			;
 			return;
 		}
 	}
