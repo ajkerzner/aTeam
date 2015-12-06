@@ -11,12 +11,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -170,6 +166,7 @@ public class MainScreen extends JFrame
 			buttons[i].setFocusable(false);
 
 			buttons[i].setFont(button_font);
+			// Adds action
 			buttons[i].setAction(new AbstractAction()
 			{
 				/**
@@ -177,7 +174,6 @@ public class MainScreen extends JFrame
 				 */
 				private static final long serialVersionUID = 1L;
 
-				@Override
 				public void actionPerformed(ActionEvent event)
 				{
 					// Calls move(button_number).
@@ -191,12 +187,6 @@ public class MainScreen extends JFrame
 			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(keys[i], 0), String.valueOf(i));
 			buttons[i].getActionMap().put(String.valueOf(i), buttons[i].getAction());
-
-			// Add keyboard shortcut
-			// buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-			// .put(KeyStroke.getKeyStroke(keys[i], 0), buttons[i].getAction());
-			// buttons[i].getActionMap().put(buttons[i].getAction(),
-			// buttons[i].getActionListeners());
 
 			// Disable button
 			buttons[i].setEnabled(false);
@@ -223,14 +213,20 @@ public class MainScreen extends JFrame
 		// Add mnemonic
 		menu_new_game.setMnemonic(KeyEvent.VK_N);
 		// Add action to call newGame(true)
-		menu_new_game.addActionListener(new ActionListener()
+		menu_new_game.setAction(new AbstractAction()
 		{
-			@Override
+
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(ActionEvent event)
 			{
 				newGame(true);
 			}
 		});
+
 		// Add to File menu
 		menu_file.add(menu_new_game);
 
@@ -244,9 +240,13 @@ public class MainScreen extends JFrame
 		// Add mnemonic
 		menu_exit.setMnemonic(KeyEvent.VK_E);
 		// Add action to call exitGame(0)
-		menu_exit.addActionListener(new ActionListener()
+		menu_exit.setAction(new AbstractAction()
 		{
-			@Override
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(ActionEvent event)
 			{
 				// Exit normally
@@ -272,12 +272,16 @@ public class MainScreen extends JFrame
 		// Add mnemonic
 		menu_undo.setMnemonic(KeyEvent.VK_U);
 		// Add action to call undo()
-		menu_undo.addActionListener(new ActionListener()
+		menu_undo.setAction(new AbstractAction()
 		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
 
-			@Override
 			public void actionPerformed(ActionEvent event)
 			{
+				// Undo
 				undo();
 			}
 		});
@@ -300,12 +304,16 @@ public class MainScreen extends JFrame
 		// Add mnemonic
 		menu_about.setMnemonic(KeyEvent.VK_A);
 		// Add action to call about()
-		menu_about.addActionListener(new ActionListener()
+		menu_about.setAction(new AbstractAction()
 		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
 
-			@Override
 			public void actionPerformed(ActionEvent event)
 			{
+				// About screen
 				about();
 			}
 		});
