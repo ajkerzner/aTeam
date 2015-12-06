@@ -81,6 +81,7 @@ public class MainScreen extends JFrame
 	JLabel[]									player_names;
 	JLabel[]									player_scores;
 	JButton[]									buttons;
+	JLabel										current_turn;
 	JMenuBar									menu_bar;
 	JMenu											menu_file;
 	JMenuItem									menu_new_game;
@@ -120,7 +121,6 @@ public class MainScreen extends JFrame
 		player_scores = new JLabel[2];
 
 		panel = new JPanel();
-		// panel.setSize(100, 100);
 
 		// Grid layout
 		grid = new GridBagLayout();
@@ -338,6 +338,11 @@ public class MainScreen extends JFrame
 
 		}
 
+		current_turn = new JLabel("Please start a new game");
+		current_turn.setFont(panel_font);
+		current_turn.setHorizontalAlignment(SwingConstants.CENTER);
+		add(current_turn, BorderLayout.SOUTH);
+
 		// Set default size
 		setSize(1280, 720);
 
@@ -389,7 +394,7 @@ public class MainScreen extends JFrame
 				player = "no one";
 			}
 			System.out.println("Game was won by " + player);
-			return true;
+			// TODO Add win screen
 		}
 		else
 		{
@@ -397,6 +402,20 @@ public class MainScreen extends JFrame
 			buttons[location - 1].setEnabled(false);
 		}
 
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				current_turn.setText("" + player_one.getName() + "'s turn");
+				break;
+			case PLAYER_TWO:
+				current_turn.setText("" + player_two.getName() + "'s turn");
+				break;
+			case NO_PLAYERS:
+			default:
+				current_turn.setText("Please start a new game");
+				break;
+
+		}
 		return true;
 	}
 
