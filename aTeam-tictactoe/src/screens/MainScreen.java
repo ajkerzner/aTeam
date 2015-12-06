@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 
+import game.AboutScreen;
 import game.Board;
 import screens.NameScreen;
 import game.Player;
@@ -459,9 +460,11 @@ public class MainScreen extends JFrame
 		}
 	}
 
+	AboutScreen about = new AboutScreen();
 	protected void about()
 	{
-		System.out.println("About screen will have opened.");
+		//System.out.println("About screen will have opened.");
+		about.setVisible(true);
 	}
 
 	public static void main(String[] args)

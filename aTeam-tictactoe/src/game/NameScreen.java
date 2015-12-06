@@ -17,6 +17,7 @@ public class NameScreen extends javax.swing.JFrame
 	 */
 	public NameScreen()
 	{
+		super("Name Input");
 		initComponents();
 	}
 	

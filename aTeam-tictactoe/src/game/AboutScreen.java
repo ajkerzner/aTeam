@@ -9,7 +9,10 @@ public class AboutScreen extends javax.swing.JFrame {
   /**
    * Creates new form AboutScreen
    */
+  
+	
   public AboutScreen() {
+  		super("About Tic-Tac-Toe");
       initComponents();
   }
 
@@ -26,6 +29,7 @@ public class AboutScreen extends javax.swing.JFrame {
       jLabel8 = new javax.swing.JLabel();
       jButton1 = new javax.swing.JButton();
       setResizable(false);
+
 
       setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
