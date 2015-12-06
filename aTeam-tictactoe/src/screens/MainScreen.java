@@ -65,10 +65,6 @@ public class MainScreen extends JFrame
 	 */
 	private static final long	serialVersionUID	= 1L;
 
-	// Static size, in pixels
-	private static final int	WIDTH							= 1000;
-	private static final int	HEIGHT						= 720;
-
 	Turn											turn							= Turn.NO_PLAYERS;
 	protected Square					game_winner				= Square.EMPTY;
 	protected Player					player_one;
@@ -87,6 +83,7 @@ public class MainScreen extends JFrame
 	private JMenuBar					menu_bar;
 	private JMenu							menu_file;
 	private JMenuItem					menu_new_game;
+	private JMenuItem					menu_new_players;
 	private JMenuItem					menu_exit;
 	private JMenu							menu_edit;
 	private JMenuItem					menu_undo;
@@ -211,15 +208,9 @@ public class MainScreen extends JFrame
 		 * Create File->New_Game menu item
 		 */
 		menu_new_game = new JMenuItem("New Game");
-		// Add keyboard shortcut
-		menu_new_game.setAccelerator(
-			KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		// Add mnemonic
-		menu_new_game.setMnemonic(KeyEvent.VK_N);
-		// Add action to call newGame(true)
+		// Add action to call newGame(false)
 		menu_new_game.setAction(new AbstractAction()
 		{
-
 			/**
 			 * Default serial version UID
 			 */
@@ -227,12 +218,49 @@ public class MainScreen extends JFrame
 
 			public void actionPerformed(ActionEvent event)
 			{
-				newGame(true);
+				// Start new game, keep existing players
+				newGame(false);
 			}
 		});
+		// Add text
+		menu_new_game.setText("New Game");
+		// Add keyboard shortcut
+		menu_new_game.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_new_game.setMnemonic(KeyEvent.VK_N);
 
 		// Add to File menu
 		menu_file.add(menu_new_game);
+
+		/**
+		 * Create File->New_Players menu item
+		 */
+		menu_new_players = new JMenuItem("New Players");
+		// Add action to call newGame(true)
+		menu_new_players.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// Start new game with new players
+				newGame(true);
+			}
+		});
+		// Add text
+		menu_new_players.setText("New Players");
+		// Add keyboard shortcut
+		menu_new_players.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+			ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_new_players.setMnemonic(KeyEvent.VK_P);
+
+		// Add to File menu
+		menu_file.add(menu_new_players);
 
 		/**
 		 * Create File->Exit menu item
@@ -257,6 +285,13 @@ public class MainScreen extends JFrame
 				exitGame(0);
 			}
 		});
+		// Add text
+		menu_exit.setText("Exit");
+		// Add keyboard shortcut
+		menu_exit.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+		// Add mnemonic
+		menu_exit.setMnemonic(KeyEvent.VK_E);
 		// Add to File menu
 		menu_file.add(menu_exit);
 
@@ -270,11 +305,6 @@ public class MainScreen extends JFrame
 		 * Create Edit->Undo menu item
 		 */
 		menu_undo = new JMenuItem("Undo");
-		// Add keyboard shortcut
-		menu_undo.setAccelerator(
-			KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
-		// Add mnemonic
-		menu_undo.setMnemonic(KeyEvent.VK_U);
 		// Add action to call undo()
 		menu_undo.setAction(new AbstractAction()
 		{
@@ -289,6 +319,14 @@ public class MainScreen extends JFrame
 				undo();
 			}
 		});
+		// Add text
+		menu_edit.setText("Edit");
+		// Add keyboard shortcut
+		menu_undo.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_undo.setMnemonic(KeyEvent.VK_U);
+
 		// Add to Edit menu
 		menu_edit.add(menu_undo);
 
@@ -302,11 +340,6 @@ public class MainScreen extends JFrame
 		 * Create Help->About menu item
 		 */
 		menu_about = new JMenuItem("About");
-		// Add keyboard shortcut
-		menu_about.setAccelerator(
-			KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-		// Add mnemonic
-		menu_about.setMnemonic(KeyEvent.VK_A);
 		// Add action to call about()
 		menu_about.setAction(new AbstractAction()
 		{
@@ -321,6 +354,13 @@ public class MainScreen extends JFrame
 				about();
 			}
 		});
+		// Add text
+		menu_help.setText("About");
+		// Add keyboard shortcut
+		menu_about.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_about.setMnemonic(KeyEvent.VK_A);
 		// Add to Help menu
 		menu_help.add(menu_about);
 
@@ -371,7 +411,7 @@ public class MainScreen extends JFrame
 		add(panel);
 
 		// Set default size
-		setSize(WIDTH, HEIGHT);
+		setSize(1280, 720);
 
 		// Center MainScreen on screen
 		this.setLocationRelativeTo(null);
@@ -493,7 +533,7 @@ public class MainScreen extends JFrame
 			updateScore();
 
 			String[] options =
-				{ "Play again", "Switch players", "Quit" };
+				{ "Play again", "Switch players", "Exit" };
 			result = JOptionPane.showOptionDialog(getParent(),
 				winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
