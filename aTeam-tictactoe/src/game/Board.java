@@ -444,6 +444,25 @@ public class Board
 	}
 
 	/**
+	 * Returns the winner of the game. If the game is not over, returns null.
+	 * 
+	 * @return a {@link Square}
+	 * 
+	 * @see Board
+	 */
+	public Square getWinner()
+	{
+		if (game_over)
+		{
+			return game_winner;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * Makes the next move. Checks if the game is over. Returns true if the move
 	 * ended the game.
 	 * 

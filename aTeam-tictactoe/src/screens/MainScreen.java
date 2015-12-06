@@ -16,6 +16,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+
+import errors.GameOverException;
 import game.Board;
 import game.Player;
 import game.Square;
@@ -49,7 +51,7 @@ public class MainScreen extends JFrame
 
 	protected Player					player_one;
 	protected Player					player_two;
-	protected Board						board							= new Board();
+	protected Board						board;
 
 	protected Square					game_winner				= Square.EMPTY;
 
@@ -57,6 +59,11 @@ public class MainScreen extends JFrame
 	 * Default serial version UID
 	 */
 	private static final long	serialVersionUID	= 1L;
+
+	BorderLayout							layout;
+	JPanel										panel;
+	GridLayout								grid;
+	JButton[]									buttons;
 
 	/**
 	 * 
@@ -68,6 +75,7 @@ public class MainScreen extends JFrame
 		super("aTeam Tic-Tac-Toe");
 
 		// Creates board
+		board = new Board();
 
 		// Set default close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,14 +84,14 @@ public class MainScreen extends JFrame
 		setSize(640, 480);
 
 		// Set layout
-		BorderLayout layout = new BorderLayout();
+		layout = new BorderLayout();
 		setLayout(layout);
 
-		GridLayout grid = new GridLayout(3, 3);
-		JPanel panel = new JPanel();
+		grid = new GridLayout(3, 3);
+		panel = new JPanel();
 		panel.setLayout(grid);
 		add(panel, BorderLayout.CENTER);
-		JButton[] buttons = new JButton[9];
+		buttons = new JButton[9];
 		// GridLayout.;
 		final int[] order =
 			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
@@ -93,39 +101,26 @@ public class MainScreen extends JFrame
 				KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
 		for (int i : order)
 		{
+			// This subtracts 1 from each i-value
 			i = i - 1;
 			buttons[i] = new JButton(Integer.toString(i + 1));
+			buttons[i].setName(Integer.toString(i + 1));
+			buttons[i].setText("");
 			buttons[i].addActionListener(new ActionListener()
 			{
 				@Override
 				public void actionPerformed(ActionEvent event)
 				{
-
-					if (turn == Turn.NO_PLAYERS)
-					{
-						// Do nothing
-						// Game not in progress.
-					}
-					else if (turn == Turn.PLAYER_ONE)
-					{
-						// Moves for player two
-						board.next(
-							Integer.valueOf(((JButton) event.getSource()).getName()) + 1,
-							Square.X);
-					}
-					else if (turn == Turn.PLAYER_TWO)
-					{
-						// Moves for player two
-						board.next(
-							Integer.valueOf(((JButton) event.getSource()).getName()) + 1,
-							Square.O);
-					}
-
+					// Calls move(button_number).
+					move(Integer.parseInt(((JButton) event.getSource()).getName()));
 				}
 			});
+			// Add keyboard shortcut
 			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(keys[i], 0), buttons[i].getAction());
 
+			// Disable button
+			buttons[i].setEnabled(false);
 			panel.add(buttons[i]);
 		}
 
@@ -153,7 +148,7 @@ public class MainScreen extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				newGame();
+				newGame(true);
 			}
 		});
 		// Add to File menu
@@ -181,10 +176,73 @@ public class MainScreen extends JFrame
 		menu_file.add(menu_exit);
 
 		menu_bar.add(menu_file);
+
+		// Create Edit menu
+		JMenu menu_edit = new JMenu("Edit");
+		menu_file.setMnemonic(KeyEvent.VK_E);
+
+		/**
+		 * Create Edit->Undo menu item
+		 */
+		JMenuItem menu_undo = new JMenuItem("Undo");
+		// Add keyboard shortcut
+		menu_undo.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_undo.setMnemonic(KeyEvent.VK_U);
+		// Add action to call undo()
+		menu_undo.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				undo();
+			}
+		});
+		// Add to Edit menu
+		menu_edit.add(menu_undo);
+
+		menu_bar.add(menu_edit);
+
+		// Create Help menu
+		JMenu menu_help = new JMenu("Help");
+		menu_help.setMnemonic(KeyEvent.VK_H);
+
+		/**
+		 * Create Help->About menu item
+		 */
+		JMenuItem menu_about = new JMenuItem("About");
+		// Add keyboard shortcut
+		menu_about.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_about.setMnemonic(KeyEvent.VK_H);
+		// Add action to call about()
+		menu_about.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				about();
+			}
+		});
+		// Add to Help menu
+		menu_help.add(menu_about);
+
+		// Add Help to menu bar
+		menu_bar.add(menu_help);
+
 		this.setJMenuBar(menu_bar);
 
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
+	}
+
+	public boolean move(int location)
+	{
+		return true;
 	}
 
 	/**
@@ -222,6 +280,21 @@ public class MainScreen extends JFrame
 
 		turn = Turn.PLAYER_ONE;
 
+		for (JButton button : buttons)
+		{
+			button.setEnabled(true);
+		}
+
+	}
+
+	protected void undo()
+	{
+		System.out.println("Undo");
+	}
+
+	protected void about()
+	{
+		System.out.println("About screen will have opened.");
 	}
 
 	public static void main(String[] args)
