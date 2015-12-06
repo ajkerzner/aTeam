@@ -65,6 +65,10 @@ public class MainScreen extends JFrame
 	 */
 	private static final long	serialVersionUID	= 1L;
 
+	// Static size, in pixels
+	private static final int	WIDTH							= 1000;
+	private static final int	HEIGHT						= 720;
+
 	Turn											turn							= Turn.NO_PLAYERS;
 	protected Square					game_winner				= Square.EMPTY;
 	protected Player					player_one;
@@ -367,7 +371,7 @@ public class MainScreen extends JFrame
 		add(panel);
 
 		// Set default size
-		setSize(1280, 720);
+		setSize(WIDTH, HEIGHT);
 
 		// Center MainScreen on screen
 		this.setLocationRelativeTo(null);
