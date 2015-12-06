@@ -270,6 +270,7 @@ public class MainScreen extends JFrame
 		if (board.next(location, this_move))
 		{
 			// Game is over
+			buttons[location - 1].setText(player);
 			game_winner = board.getWinner();
 			turn = Turn.NO_PLAYERS;
 			for (JButton button : buttons)
@@ -326,6 +327,7 @@ public class MainScreen extends JFrame
 		for (JButton button : buttons)
 		{
 			button.setEnabled(true);
+			button.setText("");
 		}
 
 	}
