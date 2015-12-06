@@ -1,5 +1,5 @@
 /**
- * 
+ * @author AlexKerzner
  */
 
 package errors;
@@ -8,12 +8,14 @@ package errors;
  * <code>SquareNotEmpty</code> is thrown when attempting to overwrite the value
  * of a square, if the square is not empty.
  * 
+ * @author AlexKerzner
+ * 
+ * @version 1.0
+ * 
  * @see SquareOutOfBounds
  * @see GameOverException
  * 
  * @see game.Board
- * 
- * @author AlexKerzner
  */
 public class SquareNotEmpty extends RuntimeException
 {

@@ -1,5 +1,5 @@
 /**
- * 
+ * @author AlexKerzner
  */
 
 package game;
@@ -9,6 +9,8 @@ package game;
  * board. The value may be {@link Square#X}, {@link Square#O}, or {@link EMPTY}.
  * 
  * @author AlexKerzner
+ * 
+ * @version 1.0
  * 
  * @see Board
  *

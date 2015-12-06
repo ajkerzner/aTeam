@@ -1,5 +1,5 @@
 /**
- * 
+ * @author AlexKerzner
  */
 
 package errors;
@@ -8,12 +8,14 @@ package errors;
  * <code>SquareOutOfBounds</code> is thrown when attempting to reference a
  * square not on the tic-tac-toe board.
  * 
+ * @author AlexKerzner
+ * 
+ * @version 1.0
+ * 
  * @see SquareNotEmpty
  * @see GameOverException
  * 
  * @see game.Board
- * 
- * @author AlexKerzner
  */
 public class SquareOutOfBounds extends RuntimeException
 {

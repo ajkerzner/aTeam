@@ -1,604 +1,837 @@
+/**
+ * @author AlexKerzner
+ * @author JosephMiller
+ * @author BenjaminDodson
+ * @author RonaldDrescher
+ */
+
 package game;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.BevelBorder;
 
 /**
- * @author Joe
- *
+ * 
+ * The Main Screen.
+ * 
+ * @author AlexKerzner
+ * @author JosephMiller
+ * @author BenjaminDodson
+ * @author RonaldDrescher
+ * 
+ * @version 1.0
+ * 
+ * @see Board
  */
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates and open the template
- * in the editor.
- */
-
-/**
- *
- * @author Joe
- */
-public class MainScreen extends javax.swing.JFrame
+public class MainScreen extends JFrame
 {
+	/**
+	 * An enumerated value representing the players
+	 */
+	protected enum Turn
+	{
+		PLAYER_ONE,
+		PLAYER_TWO,
+		NO_PLAYERS
+	}
 
 	/**
-	 * Creates new form MainScreen
+	 * Default serial version UID
+	 */
+	private static final long	serialVersionUID	= 1L;
+
+	/**
+	 * Fixed width of the Main Screen
+	 */
+	private static final int	WIDTH							= 1000;
+
+	/**
+	 * Fixed height of the Main Screen
+	 */
+	private static final int	HEIGHT						= 500;
+
+	// Variable initialization
+	Turn											turn							= Turn.NO_PLAYERS;
+	protected Square					game_winner				= Square.EMPTY;
+	protected Player					player_one;
+	protected Player					player_two;
+	protected Board						board;
+
+	private BorderLayout			layout;
+	private JPanel						panel;
+	private JPanel						game_panel;
+	private GridBagLayout			grid;
+	private JPanel[]					player_panels;
+	private JLabel[]					player_names;
+	private JLabel[]					player_scores;
+	private JButton[]					buttons;
+	private JLabel						current_turn;
+	private JMenuBar					menu_bar;
+	private JMenu							menu_file;
+	private JMenuItem					menu_new_game;
+	private JMenuItem					menu_new_players;
+	private JMenuItem					menu_exit;
+	private JMenu							menu_edit;
+	private JMenuItem					menu_undo;
+	private JMenu							menu_help;
+	private JMenuItem					menu_about;
+
+	/**
+	 * 
 	 */
 	public MainScreen()
 	{
-		initComponents();
+
+		// Set title
+		super("aTeam Tic-Tac-Toe");
+
+		// Set default close operation
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// Set look-and-feel
+		setDefaultLookAndFeelDecorated(true);
+
+		panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		add(panel);
+
+		// Set layout
+		layout = new BorderLayout(20, 20);
+		panel.setLayout(layout);
+
+		// Create temporary players
+		player_one = new Player("               ");
+		player_two = new Player("               ");
+
+		player_names = new JLabel[2];
+		player_scores = new JLabel[2];
+
+		game_panel = new JPanel();
+
+		// Grid layout
+		grid = new GridBagLayout();
+		game_panel.setLayout(grid);
+
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = GridBagConstraints.CENTER;
+		constraints.gridy = GridBagConstraints.CENTER;
+		constraints.gridwidth = 3;
+		constraints.gridheight = 3;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.insets = new Insets(5, 5, 5, 5);
+
+		constraints.anchor = 0;
+
+		final int[] position =
+			{ GridBagConstraints.SOUTHWEST, GridBagConstraints.SOUTH,
+				GridBagConstraints.SOUTHEAST, GridBagConstraints.WEST,
+				GridBagConstraints.CENTER, GridBagConstraints.EAST,
+				GridBagConstraints.NORTHWEST, GridBagConstraints.NORTH,
+				GridBagConstraints.NORTHEAST
+
+		};
+		panel.add(game_panel, BorderLayout.CENTER);
+		buttons = new JButton[9];
+
+		final Font button_font = new Font(Font.MONOSPACED, Font.PLAIN, 42);
+		final int[] order =
+			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
+		final int[] keys =
+			{ KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
+				KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
+				KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
+		for (int i : order)
+		{
+			// This subtracts 1 from each i-value
+			i = i - 1;
+			buttons[i] = new JButton(Integer.toString(i + 1));
+			buttons[i].setName(Integer.toString(i + 1));
+			buttons[i].setText("");
+			buttons[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
+			buttons[i].setFocusable(false);
+
+			buttons[i].setFont(button_font);
+			// Adds action
+			buttons[i].setAction(new AbstractAction()
+			{
+				/**
+				 * Default serial version UID
+				 */
+				private static final long serialVersionUID = 1L;
+
+				public void actionPerformed(ActionEvent event)
+				{
+					// Calls move(button_number).
+					if (((JButton) event.getSource()).isEnabled())
+					{
+						move(Integer.parseInt(((JButton) event.getSource()).getName()));
+					}
+				}
+			});
+
+			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(keys[i], 0), String.valueOf(i));
+			buttons[i].getActionMap().put(String.valueOf(i), buttons[i].getAction());
+
+			// Disable button
+			buttons[i].setEnabled(false);
+			buttons[i].setSize(100, 100);
+			buttons[i].setPreferredSize(buttons[i].getSize());
+			constraints.anchor = position[i];
+			game_panel.add(buttons[i], constraints);
+		}
+
+		// Create Menu Bar
+		menu_bar = new JMenuBar();
+
+		// Create File menu
+		menu_file = new JMenu("File");
+		menu_file.setMnemonic(KeyEvent.VK_F);
+
+		/**
+		 * Create File->New_Game menu item
+		 */
+		menu_new_game = new JMenuItem("New Game");
+		// Add action to call newGame(false)
+		menu_new_game.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// Start new game, keep existing players
+				newGame(false);
+			}
+		});
+		// Add text
+		menu_new_game.setText("New Game");
+		// Add keyboard shortcut
+		menu_new_game.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_new_game.setMnemonic(KeyEvent.VK_N);
+
+		// Add to File menu
+		menu_file.add(menu_new_game);
+
+		/**
+		 * Create File->New_Players menu item
+		 */
+		menu_new_players = new JMenuItem("New Players");
+		// Add action to call newGame(true)
+		menu_new_players.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// Start new game with new players
+				newGame(true);
+			}
+		});
+		// Add text
+		menu_new_players.setText("New Players");
+		// Add keyboard shortcut
+		menu_new_players.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+			ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_new_players.setMnemonic(KeyEvent.VK_P);
+
+		// Add to File menu
+		menu_file.add(menu_new_players);
+
+		/**
+		 * Create File->Exit menu item
+		 */
+		menu_exit = new JMenuItem("Exit");
+		// Add keyboard shortcut
+		menu_exit.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+		// Add mnemonic
+		menu_exit.setMnemonic(KeyEvent.VK_E);
+		// Add action to call exitGame(0)
+		menu_exit.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// Exit normally
+				exitGame(0);
+			}
+		});
+		// Add text
+		menu_exit.setText("Exit");
+		// Add keyboard shortcut
+		menu_exit.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+		// Add mnemonic
+		menu_exit.setMnemonic(KeyEvent.VK_E);
+		// Add to File menu
+		menu_file.add(menu_exit);
+
+		menu_bar.add(menu_file);
+
+		// Create Edit menu
+		menu_edit = new JMenu("Edit");
+		menu_edit.setMnemonic(KeyEvent.VK_E);
+
+		/**
+		 * Create Edit->Undo menu item
+		 */
+		menu_undo = new JMenuItem("Undo");
+		// Add action to call undo()
+		menu_undo.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// Undo
+				undo();
+			}
+		});
+		// Add text
+		menu_edit.setText("Edit");
+		// Add keyboard shortcut
+		menu_undo.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_undo.setMnemonic(KeyEvent.VK_U);
+
+		// Add to Edit menu
+		menu_edit.add(menu_undo);
+
+		menu_bar.add(menu_edit);
+
+		// Create Help menu
+		menu_help = new JMenu("Help");
+		menu_help.setMnemonic(KeyEvent.VK_H);
+
+		/**
+		 * Create Help->About menu item
+		 */
+		menu_about = new JMenuItem("About");
+		// Add action to call about()
+		menu_about.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// About screen
+				about();
+			}
+		});
+		// Add text
+		menu_help.setText("About");
+		// Add keyboard shortcut
+		menu_about.setAccelerator(
+			KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+		// Add mnemonic
+		menu_about.setMnemonic(KeyEvent.VK_A);
+		// Add to Help menu
+		menu_help.add(menu_about);
+
+		// Add Help to menu bar
+		menu_bar.add(menu_help);
+
+		// Sets the menu bar
+		this.setJMenuBar(menu_bar);
+
+		// Create player panels
+		player_panels = new JPanel[2];
+		final String[] locations =
+			{ BorderLayout.WEST, BorderLayout.EAST };
+		final String[] symbols =
+			{ " X - ", " O - " };
+		Player[] players =
+			{ player_one, player_two };
+		final Font panel_font = new Font(Font.MONOSPACED, Font.PLAIN, 24);
+		for (int i = 0; i < 2; i++)
+		{
+			// Create panel
+			player_panels[i] = new JPanel();
+			player_panels[i].setLayout(new BorderLayout(10, 10));
+
+			// Add player name
+			JLabel name = new JLabel(symbols[i] + players[i].getName());
+			name.setFont(panel_font);
+			player_names[i] = name;
+			player_names[i].setBorder(BorderFactory.createLineBorder(new Color(0)));
+			player_panels[i].add(name, BorderLayout.NORTH);
+
+			// Add player name
+			JLabel score = new JLabel("Score: " + players[i].getScore());
+			score.setFont(panel_font);
+			player_scores[i] = score;
+			player_panels[i].add(score, BorderLayout.CENTER);
+
+			// Add panel
+			panel.add(player_panels[i], locations[i]);
+
+		}
+
+		current_turn = new JLabel("Please start a new game");
+		current_turn.setFont(panel_font);
+		current_turn.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(current_turn, BorderLayout.SOUTH);
+
+		add(panel);
+
+		// Set default size
+		setSize(WIDTH, HEIGHT);
+		setResizable(false);
+
+		// Center MainScreen on screen
+		this.setLocationRelativeTo(null);
+
+		this.setVisible(true);
+
+		// Creates new game
+		newGame(true);
 	}
 
 	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
+	 * Updates the player names.
 	 */
-	@SuppressWarnings("unchecked")
-	// <editor-fold defaultstate="collapsed" desc="Generated Code">
-	private void initComponents()
+	protected void updatePlayerNames()
 	{
+		String player_one_name = player_one.getName();
+		String player_two_name = player_two.getName();
+		while (player_one_name.length() < 15)
+		{
+			// append " " to name
+			player_one_name = player_one_name + " ";
+		}
+		while (player_two_name.length() < 15)
+		{
+			// append " " to name
+			player_two_name = player_two_name + " ";
+		}
 
-		jButton1 = new javax.swing.JButton(); // Top-left game button
-		jButton2 = new javax.swing.JButton(); // Top-center game button
-		jButton3 = new javax.swing.JButton(); // Top-right game button
-		jButton4 = new javax.swing.JButton(); // Mid-left game button
-		jButton5 = new javax.swing.JButton(); // Center game button
-		jButton6 = new javax.swing.JButton(); // Mid-right game button
-		jButton7 = new javax.swing.JButton(); // Bottom-left game button
-		jButton8 = new javax.swing.JButton(); // Bottom-center game button
-		jButton9 = new javax.swing.JButton(); // Bottom-right game button
-		jLabel1 = new javax.swing.JLabel();
-		jLabel2 = new javax.swing.JLabel();
-		jLabel3 = new javax.swing.JLabel();
-		jLabel4 = new javax.swing.JLabel();
-		jMenuBar1 = new javax.swing.JMenuBar();
-		jMenu1 = new javax.swing.JMenu();
-		jMenuNewGame = new javax.swing.JMenuItem();
-		jMenuExit = new javax.swing.JMenuItem();
-		jMenu2 = new javax.swing.JMenu();
-		jMenuUndo = new javax.swing.JMenuItem();
-		jMenu3 = new javax.swing.JMenu();
-		jMenuMainScreenAbout = new javax.swing.JMenuItem(); //
-		setResizable(false); // Makes it so the window is not resizable
-
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.setPreferredSize(new java.awt.Dimension(75, 75));
-        
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-        
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
-            }
-        });
-        
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
-            }
-        });
-        
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jButton2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton2KeyPressed(evt);
-            }
-        });     
-        
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
-            }
-        });
-        
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jButton3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton3KeyPressed(evt);
-            }
-        });  
-        
-        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton4MouseClicked(evt);
-            }
-        });
-        
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jButton4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton4KeyPressed(evt);
-            }
-        });  
-        
-        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton5MouseClicked(evt);
-            }
-        });
-        
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jButton5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton5KeyPressed(evt);
-            }
-        });  
-        
-        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton6MouseClicked(evt);
-            }
-        });
-        
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jButton6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton6KeyPressed(evt);
-            }
-        });  
-        
-        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton7MouseClicked(evt);
-            }
-        });
-        
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-        jButton7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton7KeyPressed(evt);
-            }
-        });  
-        
-        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton8MouseClicked(evt);
-            }
-        });
-        
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-        jButton8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton8KeyPressed(evt);
-            }
-        });  
-        
-        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
-        	public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton9MouseClicked(evt);
-            }
-        });
-        
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-        jButton9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton9KeyPressed(evt);
-            }
-        });  
-        
-        
-        jMenuExit.addActionListener(new java.awt.event.ActionListener() {
-          public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jMenuExitActionPerformed(evt);
-          }
-      });
-      
-        NameScreen name = new NameScreen();
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton2.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton3.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton4.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton5.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton6.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton7.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton8.setPreferredSize(new java.awt.Dimension(75, 75));
-        jButton9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton9.setPreferredSize(new java.awt.Dimension(75, 75));
-
-        jLabel1.setText(/*name.getPlayer1Name() + */" 's Win Count: ");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel2.setText(/*name.getPlayer2Name() + */" 's Win Count: ");
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Current Turn");
-        jLabel4.setText("Player 1:");
-        jMenu1.setText("File");
-
-        jMenuNewGame.setText("New Game");
-        jMenuNewGame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuNewGameActionPerformed(evt);
-            }
-        });
-        
-        jMenu1.add(jMenuNewGame);
-        jMenuExit.setText("Exit");
-        jMenu1.add(jMenuExit);
-        jMenuBar1.add(jMenu1);
-        jMenu2.setText("Edit");
-        jMenuUndo.setText("Undo Move");
-        jMenu2.add(jMenuUndo);
-        jMenuBar1.add(jMenu2);
-        jMenu3.setText("Help");
-        jMenuMainScreenAbout.setText("About");
-        
-        jMenuMainScreenAbout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuMainScreenAboutActionPerformed(evt);
-            }
-        });
-        
-        jMenu3.add(jMenuMainScreenAbout);
-
-        jMenuBar1.add(jMenu3);
-
-        setJMenuBar(jMenuBar1);
-
-        //All of this is the GUI formatting, don't worry about it
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(265, 265, 265))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        pack();
-    }// </editor-fold>                        
-
-    //Now you can go back to worrying about it
-
-		
-    /**
-     * @param args the command line arguments
-     */
-    public static void startGame(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        /* Create and display the form */
-    		java.awt.EventQueue.invokeLater(new Runnable()
-    		{
-    			public void run()
-    			{
-    				new MainScreen().setVisible(true);
-    			}
-    		});
-    }
-
-	private void jMenuNewGameActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		dispose();
-		NameScreen nameMenu = new NameScreen();
-		nameMenu.setVisible(true);
+		this.player_names[0].setText(" X - " + player_one_name);
+		this.player_names[1].setText(" O - " + player_two_name);
 	}
 
-	private void jMenuExitActionPerformed(ActionEvent evt)
-	{
-		System.exit(0);
-	}
-
-	/*
-	 * Each jButton will do the following for their ActionListener
-	 * Changes the enumerated value to X or O, depending on whose turn it was
-	 * Checks for victory conditions
-	 * If the victory conditions are met, the game ends and the winner screen loads
-	 * If not, the next player's turn goes
-	 * The button is then set to not be editable.
+	/**
+	 * Updates the score indicator.
 	 */
-
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)
+	protected void updateScore()
 	{
-		jButton1.setEnabled(false);
+		player_scores[0].setText(" Score: " + player_one.getScore());
+		player_scores[1].setText(" Score: " + player_two.getScore());
 	}
 
-	private void jButton1KeyPressed(java.awt.event.KeyEvent evt)
+	/**
+	 * Updates the turn indicator.
+	 */
+	protected void updateTurnIndicator()
 	{
-		jButton1.setEnabled(false);
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				current_turn.setText("" + player_one.getName() + "'s turn");
+				break;
+			case PLAYER_TWO:
+				current_turn.setText("" + player_two.getName() + "'s turn");
+				break;
+			case NO_PLAYERS:
+			default:
+				current_turn.setText("Please start a new game");
+				break;
+
+		}
 	}
 
-	private void jButton1MouseClicked(java.awt.event.MouseEvent evt)
+	/**
+	 * Plays a move.
+	 * 
+	 * @param location
+	 *          the location of the move
+	 */
+	public void move(int location)
 	{
-		jButton1.setEnabled(false);
+		Square this_move = Square.EMPTY;
+		String player = "";
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				player = "X";
+				this_move = Square.X;
+				turn = Turn.PLAYER_TWO;
+				break;
+			case PLAYER_TWO:
+				player = "O";
+				this_move = Square.O;
+				turn = Turn.PLAYER_ONE;
+				break;
+			case NO_PLAYERS:
+			default:
+				player = "";
+				this_move = Square.EMPTY;
+				turn = Turn.NO_PLAYERS;
+				break;
+		}
+		// Update button
+		buttons[location - 1].setText(player);
+
+		if (board.next(location, this_move))
+		{
+			// Game is over
+			menu_undo.setEnabled(false);
+			game_winner = board.getLastPlayer();
+			turn = Turn.NO_PLAYERS;
+			for (JButton button : buttons)
+			{
+				button.setEnabled(false);
+			}
+			if (game_winner.isEmpty())
+			{
+				player = "no one";
+			}
+
+			int result = 0;
+			String winner;
+			switch (game_winner)
+			{
+				case X:
+					winner = player_one.getName();
+					player_one.addGame(true);
+					player_two.addGame(false);
+					break;
+				case O:
+					winner = player_two.getName();
+					player_one.addGame(false);
+					player_two.addGame(true);
+					break;
+				case EMPTY:
+				default:
+					winner = "Nobody";
+					player_one.addGame(false);
+					player_two.addGame(false);
+			}
+
+			updateScore();
+
+			String[] options =
+				{ "Play again", "Switch players", "Exit" };
+			result = JOptionPane.showOptionDialog(getParent(),
+				winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			if (result == 0)
+			{
+				// Default
+				newGame(false);
+				switch (game_winner)
+				{
+					case X:
+						turn = Turn.PLAYER_TWO;
+						break;
+					case O:
+						turn = Turn.PLAYER_ONE;
+						break;
+					case EMPTY:
+						switch (turn)
+						{
+							case PLAYER_ONE:
+								turn = Turn.PLAYER_TWO;
+								break;
+							case PLAYER_TWO:
+								turn = Turn.PLAYER_ONE;
+								break;
+							case NO_PLAYERS:
+							default:
+								// Do nothing
+								break;
+						}
+				}
+
+			}
+			else if (result == 1)
+			{
+				// New players
+				newGame(true);
+			}
+			else
+			{
+				exitGame(0);
+			}
+
+		}
+		else
+		{
+			menu_undo.setEnabled(true);
+			buttons[location - 1].setEnabled(false);
+		}
+
+		updateTurnIndicator();
 	}
 
-	
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)
+	/**
+	 * Exits the game
+	 * 
+	 * @param error_code
+	 *          the error code (default is 0)
+	 */
+	protected void exitGame(int error_code)
 	{
-		jButton2.setEnabled(false);
+		System.exit(error_code);
 	}
 
-	private void jButton2KeyPressed(java.awt.event.KeyEvent evt)
+	/**
+	 * Prompts for new players.
+	 * 
+	 * @return a String array containing two strings - the names of player one and
+	 *         player two
+	 */
+	protected String[] getPlayerNames()
 	{
-		jButton2.setEnabled(false);
+		final String player_name_tooltip = "Names must be between 1 and 15 letters";
+		final Font font = new Font(Font.MONOSPACED, Font.PLAIN, 15);
+
+		// Message panel
+		JPanel panel = new JPanel(new GridLayout(0, 2));
+
+		JLabel label_one = new JLabel("Player 1 Name: ");
+		label_one.setFont(font);
+		panel.add(label_one);
+		JTextField text_field_one = new JTextField("Player 1", 15);
+		text_field_one.setFont(font);
+		text_field_one.setToolTipText(player_name_tooltip);
+		panel.add(text_field_one);
+
+		for (int i = 0; i < 2; i++)
+		{
+			JLabel separator = new JLabel("---------------");
+			separator.setFont(font);
+			panel.add(separator);
+		}
+
+		JLabel label_two = new JLabel("Player 2 Name: ");
+		label_two.setFont(font);
+		panel.add(label_two);
+		JTextField text_field_two = new JTextField("Player 2", 15);
+		text_field_two.setFont(font);
+		text_field_one.setToolTipText(player_name_tooltip);
+		panel.add(text_field_two);
+
+		int result = JOptionPane.CANCEL_OPTION;
+		String player_names[];
+		// Ask for player names
+		do
+		{
+			if (result == JOptionPane.OK_OPTION)
+			{
+				JOptionPane.showMessageDialog(getParent(),
+					"Please type in a name for both players, 1 to 15 characters",
+					"Name Error", JOptionPane.ERROR_MESSAGE);
+			}
+			result = JOptionPane.showConfirmDialog(getParent(), panel,
+				"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
+
+			player_names = new String[2];
+
+			if (result == JOptionPane.OK_OPTION)
+			{
+				player_names[0] = text_field_one.getText();
+				player_names[1] = text_field_two.getText();
+			}
+			else
+			{
+				exitGame(0);
+			}
+		}
+		while ((player_names[0].length() < 1) || (player_names[0].length() > 15)
+			|| (player_names[1].length() < 1) || (player_names[1].length() > 15));
+		return player_names;
+
 	}
 
-	private void jButton2MouseClicked(java.awt.event.MouseEvent evt)
+	/**
+	 * Start a new game with existing players
+	 */
+	protected void newGame()
 	{
-		jButton2.setEnabled(false);
-	}
-	
-	
-	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton3.setEnabled(false);
+		newGame(false);
 	}
 
-	private void jButton3KeyPressed(java.awt.event.KeyEvent evt)
+	/**
+	 * Start a new game
+	 * 
+	 * @param get_new_players
+	 *          true, if new players are to play
+	 */
+	protected void newGame(boolean get_new_players)
 	{
-		jButton3.setEnabled(false);
+		board = new Board();
+		switch (turn)
+		{
+			case PLAYER_ONE:
+				turn = Turn.PLAYER_TWO;
+				break;
+			case PLAYER_TWO:
+				turn = Turn.PLAYER_ONE;
+				break;
+			case NO_PLAYERS:
+			default:
+				break;
+		}
+		// Get player names, if applicable
+		if (get_new_players)
+		{
+			// Call NameScreen
+			String[] player_names = new String[2];
+			player_names = getPlayerNames();
+			if (player_names.length != 2)
+			{
+				player_names[0] = "Player 1";
+				player_names[1] = "Player 2";
+			}
+			player_one = new Player(player_names[0]);
+			player_two = new Player(player_names[1]);
+			updateScore();
+			updatePlayerNames();
+		}
+
+		turn = Turn.PLAYER_ONE;
+		menu_undo.setEnabled(false);
+
+		for (JButton button : buttons)
+		{
+			button.setEnabled(true);
+			button.setText("");
+		}
+
+		updateTurnIndicator();
 	}
 
-	private void jButton3MouseClicked(java.awt.event.MouseEvent evt)
+	/**
+	 * Undo the last move, if possible.
+	 */
+	protected void undo()
 	{
-		jButton3.setEnabled(false);
-	}
-	
-	
-	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton4.setEnabled(false);
+		if (board.isUndoPossible())
+		{
+			// Undo is possible
+			int result = board.undo();
+			if (result <= 0)
+			{
+				// Unknown error
+				System.err.println("Error - board.undo() failed. Contact aTeam.");
+				System.exit(1);
+			}
+			else
+			{
+				buttons[result - 1].setEnabled(true);
+				buttons[result - 1].setText("");
+				switch (turn)
+				{
+					case PLAYER_ONE:
+						turn = Turn.PLAYER_TWO;
+						break;
+					case PLAYER_TWO:
+						turn = Turn.PLAYER_ONE;
+						break;
+					case NO_PLAYERS:
+					default:
+						break;
+				}
+
+			}
+			menu_undo.setEnabled(false);
+			updateTurnIndicator();
+			return;
+		}
 	}
 
-	private void jButton4KeyPressed(java.awt.event.KeyEvent evt)
+	/**
+	 * Shows the About Screen.
+	 * 
+	 */
+	protected void about()
 	{
-		jButton4.setEnabled(false);
+		String about_text = "<html><center>" + "<H2>Written by aTeam</H2>"
+			+ "<H3>Benjamin Dodson<br>Ronnie Drescher<br>"
+			+ "Walter Goerling<br>Alexander Kerzner<br>Joseph Miller</H3>"
+			+ "<br><b>Tic-Tac-Toe version 1.0</b></center></html>";
+		JOptionPane.showMessageDialog(getParent(), about_text, "About Tic-Tac-Toe",
+			JOptionPane.INFORMATION_MESSAGE);
+
 	}
 
-	private void jButton4MouseClicked(java.awt.event.MouseEvent evt)
+	/**
+	 * Main method
+	 * 
+	 * @param args
+	 *          the command line arguments
+	 */
+	public static void main(String[] args)
 	{
-		jButton4.setEnabled(false);
-	}
-	
-	
-	private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton5.setEnabled(false);
+		try
+		{
+			// Set System Look and Feel
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (ClassNotFoundException error)
+		{
+			error.printStackTrace();
+		}
+		catch (IllegalAccessException error)
+		{
+			error.printStackTrace();
+		}
+		catch (InstantiationException error)
+		{
+			error.printStackTrace();
+		}
+		catch (UnsupportedLookAndFeelException error)
+		{
+			error.printStackTrace();
+		}
+
+		new MainScreen();
 	}
 
-	private void jButton5KeyPressed(java.awt.event.KeyEvent evt)
-	{
-		jButton5.setEnabled(false);
-	}
-
-	private void jButton5MouseClicked(java.awt.event.MouseEvent evt)
-	{
-		jButton5.setEnabled(false);
-	}
-	
-	
-	private void jButton6ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton6.setEnabled(false);
-	}
-
-	private void jButton6KeyPressed(java.awt.event.KeyEvent evt)
-	{
-		jButton6.setEnabled(false);
-	}
-
-	private void jButton6MouseClicked(java.awt.event.MouseEvent evt)
-	{
-		jButton6.setEnabled(false);
-	}
-	
-	
-	private void jButton7ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton7.setEnabled(false);
-	}
-
-	private void jButton7KeyPressed(java.awt.event.KeyEvent evt)
-	{
-		jButton7.setEnabled(false);
-	}
-
-	private void jButton7MouseClicked(java.awt.event.MouseEvent evt)
-	{
-		jButton7.setEnabled(false);
-	}
-	
-	
-	private void jButton8ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton8.setEnabled(false);
-	}
-
-	private void jButton8KeyPressed(java.awt.event.KeyEvent evt)
-	{
-		jButton8.setEnabled(false);
-	}
-
-	private void jButton8MouseClicked(java.awt.event.MouseEvent evt)
-	{
-		jButton8.setEnabled(false);
-	}
-	
-	
-	private void jButton9ActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		jButton9.setEnabled(false);
-	}
-
-	private void jButton9KeyPressed(java.awt.event.KeyEvent evt)
-	{
-		jButton9.setEnabled(false);
-	}
-
-	private void jButton9MouseClicked(java.awt.event.MouseEvent evt)
-	{
-		jButton9.setEnabled(false);
-	}
-	
-	
-	
-	AboutScreen about = new AboutScreen();
-	private void
-		jMenuMainScreenAboutActionPerformed(java.awt.event.ActionEvent evt)
-	{
-		about.setVisible(true);
-	}
-
-
-	// Variables declaration - do not modify
-	private javax.swing.JButton		jButton1;
-	private javax.swing.JButton		jButton2;
-	private javax.swing.JButton		jButton3;
-	private javax.swing.JButton		jButton4;
-	private javax.swing.JButton		jButton5;
-	private javax.swing.JButton		jButton6;
-	private javax.swing.JButton		jButton7;
-	private javax.swing.JButton		jButton8;
-	private javax.swing.JButton		jButton9;
-	private javax.swing.JLabel		jLabel1;
-	private javax.swing.JLabel		jLabel2;
-	private javax.swing.JLabel		jLabel3;
-	private javax.swing.JLabel		jLabel4;
-	private javax.swing.JMenu			jMenu1;
-	private javax.swing.JMenu			jMenu2;
-	private javax.swing.JMenu			jMenu3;
-	private javax.swing.JMenuBar	jMenuBar1;
-	private javax.swing.JMenuItem	jMenuExit;
-	private javax.swing.JMenuItem	jMenuMainScreenAbout;
-	private javax.swing.JMenuItem	jMenuNewGame;
-	private javax.swing.JMenuItem	jMenuUndo;
-	// End of variables declaration
 }

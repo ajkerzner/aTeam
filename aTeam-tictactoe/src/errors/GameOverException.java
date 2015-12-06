@@ -1,5 +1,5 @@
 /**
- * 
+ * @author AlexKerzner
  */
 
 package errors;
@@ -8,12 +8,14 @@ package errors;
  * <code>GameOverException</code> is thrown when attempting to set the value of
  * a square after the game has ended.
  * 
+ * @author AlexKerzner
+ * 
+ * @version 1.0
+ * 
  * @see SquareOutOfBounds
  * @see SquareNotEmpty
  * 
  * @see game.Board
- * 
- * @author AlexKerzner
  */
 public class GameOverException extends RuntimeException
 {

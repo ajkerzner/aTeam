@@ -1,4 +1,5 @@
 /**
+ * @author AlexKerzner
  * 
  */
 
@@ -15,7 +16,8 @@ import game.Square;
  * The <code>Board</code> class represents the tic-tac-toe board for a game.
  * 
  * @author AlexKerzner
- *
+ * 
+ * @version 1.0
  * 
  */
 public class Board
