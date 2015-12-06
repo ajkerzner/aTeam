@@ -45,7 +45,9 @@ import game.Square;
  * 
  * @author AlexKerzner
  * 
- * @author Joe (original)
+ * @author Joe
+ * 
+ * @author Ben
  * 
  * 
  */
@@ -353,7 +355,34 @@ public class MainScreen extends JFrame
 		newGame(true);
 	}
 
-	public boolean updateTurnIndicator()
+	protected boolean updatePlayerNames()
+	{
+		String player_one_name = player_one.getName();
+		String player_two_name = player_two.getName();
+		while (player_one_name.length() < 15)
+		{
+			// append " " to name
+			player_one_name = player_one_name + " ";
+		}
+		while (player_two_name.length() < 15)
+		{
+			// append " " to name
+			player_two_name = player_two_name + " ";
+		}
+
+		this.player_names[0].setText("X - " + player_one_name);
+		this.player_names[1].setText("O - " + player_two_name);
+		return true;
+	}
+
+	protected boolean updateScore()
+	{
+		player_scores[0].setText("Score: " + player_one.getScore());
+		player_scores[1].setText("Score: " + player_two.getScore());
+		return true;
+	}
+
+	protected boolean updateTurnIndicator()
 	{
 		switch (turn)
 		{
@@ -419,21 +448,67 @@ public class MainScreen extends JFrame
 			{
 				case X:
 					winner = player_one.getName();
+					player_one.addGame(true);
+					player_two.addGame(false);
 					break;
 				case O:
 					winner = player_two.getName();
+					player_one.addGame(false);
+					player_two.addGame(true);
 					break;
 				case EMPTY:
 				default:
 					winner = "Nobody";
+					player_one.addGame(false);
+					player_two.addGame(false);
 			}
+
+			updateScore();
 
 			String[] options =
 				{ "Play again", "New players", "Quit" };
 			result = JOptionPane.showOptionDialog(getParent(),
-				game_winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
+				winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-			// TODO Add win screen
+			if (result == 0)
+			{
+				// Default
+				newGame(false);
+				switch (game_winner)
+				{
+					case X:
+						turn = Turn.PLAYER_ONE;
+						break;
+					case O:
+						turn = Turn.PLAYER_TWO;
+						break;
+					case EMPTY:
+						switch (turn)
+						{
+							case PLAYER_ONE:
+								turn = Turn.PLAYER_TWO;
+								break;
+							case PLAYER_TWO:
+								turn = Turn.PLAYER_ONE;
+								break;
+							case NO_PLAYERS:
+							default:
+								// Do nothing
+								break;
+						}
+				}
+
+			}
+			else if (result == 1)
+			{
+				// New players
+				newGame(true);
+			}
+			else
+			{
+				exitGame(0);
+			}
+
 		}
 		else
 		{
@@ -494,11 +569,11 @@ public class MainScreen extends JFrame
 		{
 			if (result == JOptionPane.OK_OPTION)
 			{
-				JOptionPane.showMessageDialog(this.getContentPane(),
+				JOptionPane.showMessageDialog(getParent(),
 					"Please type in a name for both players, 1 to 15 characters",
 					"Name Error", JOptionPane.ERROR_MESSAGE);
 			}
-			result = JOptionPane.showConfirmDialog(this.getContentPane(), panel,
+			result = JOptionPane.showConfirmDialog(getParent(), panel,
 				"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
 
 			player_names = new String[2];
@@ -558,22 +633,8 @@ public class MainScreen extends JFrame
 			}
 			player_one = new Player(player_names[0]);
 			player_two = new Player(player_names[1]);
-			String player_one_name = player_one.getName();
-			String player_two_name = player_two.getName();
-			while (player_one_name.length() < 15)
-			{
-				// append " " to name
-				player_one_name = player_one_name + " ";
-			}
-			while (player_two_name.length() < 15)
-			{
-				// append " " to name
-				player_two_name = player_two_name + " ";
-			}
-
-			this.player_names[0].setText("X - " + player_one_name);
-			this.player_names[1].setText("O - " + player_two_name);
-
+			updateScore();
+			updatePlayerNames();
 		}
 
 		turn = Turn.PLAYER_ONE;
@@ -631,6 +692,7 @@ public class MainScreen extends JFrame
 	protected void about()
 	{
 		// System.out.println("About screen will have opened.");
+
 		about.setVisible(true);
 	}
 
