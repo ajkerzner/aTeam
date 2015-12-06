@@ -52,7 +52,7 @@ public class NameScreen extends javax.swing.JFrame
     //Action Listener for Player 1 Name input
     jTextFieldP1.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jTextFieldP1ActionPerformed(evt);
+            //jTextFieldP1ActionPerformed(evt);
         }
     });
     
@@ -69,7 +69,7 @@ public class NameScreen extends javax.swing.JFrame
     //Action Listener for Player 2 Name Input
     jTextFieldP2.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jTextFieldP2ActionPerformed(evt);
+            //jTextFieldP2ActionPerformed(evt);
         }
     });
 
@@ -159,14 +159,18 @@ public class NameScreen extends javax.swing.JFrame
     pack();
 }// </editor-fold>                        
 
+	String player1Name;
+	String player2Name;
+
+	
 private void jNewGameActionPerformed(java.awt.event.ActionEvent evt) {                                         
     // TODO add your handling code here:
 }                                        
-    String player2Name;
-private void jTextFieldP2ActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    //String player2Name;
+/*private void jTextFieldP2ActionPerformed(java.awt.event.ActionEvent evt) {                                             
     player2Name = jTextFieldP2.getText();
 }    
-
+*/
 private void jExitActionPerformed(ActionEvent evt)
 {
 	System.exit(0);
@@ -177,15 +181,33 @@ private void jMenuFilePropertyChange(java.beans.PropertyChangeEvent evt) {
 }                                        
 
 //This loads up the Main Screen (game board) jFrame and disposes of the NameScreen page
-private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {                                            
+
+private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {
+		player2Name = jTextFieldP2.getText();
+		player1Name = jTextFieldP1.getText();
     new MainScreen().setVisible(true);
     dispose();
-}                                           
+}   
+
+public String getPlayer1Name()
+{
+	//System.out.println(player1Name);
+	return player1Name;
+	
+}
+
+public String getPlayer2Name()
+{
+	//System.out.println(player2Name);
+	return player2Name;
+}
                                     
-    String player1Name;
-private void jTextFieldP1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    //String player1Name;
+/*private void jTextFieldP1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
     player1Name = jTextFieldP1.getText();
-}                                            
+} 
+*/
+                                           
 	AboutScreen about = new AboutScreen(); 
 private void jAboutActionPerformed(java.awt.event.ActionEvent evt) {                                       
 	about.setVisible(true);
@@ -248,6 +270,15 @@ public static void doSomeStuff(String args[])
 			new NameScreen().setVisible(true);
 		}
 	});
+}
+
+public String[] getPlayerNames()
+{
+	String[] PlayerNames = null;
+	PlayerNames[0] = player1Name;
+	PlayerNames[1] = player2Name;
+	
+	return PlayerNames;
 }
 
 

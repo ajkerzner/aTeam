@@ -228,7 +228,7 @@ public class MainScreen extends javax.swing.JFrame
           }
       });
       
-        
+        NameScreen name = new NameScreen();
         jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -246,10 +246,10 @@ public class MainScreen extends javax.swing.JFrame
         jButton9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton9.setPreferredSize(new java.awt.Dimension(75, 75));
 
-        jLabel1.setText("   Win Count:");
+        jLabel1.setText(/*name.getPlayer1Name() + */" 's Win Count: ");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setText("   Win Count:");
+        jLabel2.setText(/*name.getPlayer2Name() + */" 's Win Count: ");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
