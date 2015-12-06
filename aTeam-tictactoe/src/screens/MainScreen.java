@@ -64,38 +64,33 @@ public class MainScreen extends JFrame
 		NO_PLAYERS
 	}
 
-	Turn											turn							= Turn.NO_PLAYERS;
-
-	protected Player					player_one;
-	protected Player					player_two;
-	protected Board						board;
-
-	protected Square					game_winner				= Square.EMPTY;
-
 	/**
 	 * Default serial version UID
 	 */
 	private static final long	serialVersionUID	= 1L;
 
-	BorderLayout							layout;
-	JPanel										panel;
-	GridBagLayout							grid;
-	JPanel[]									player_panels;
-	JLabel[]									player_names;
-	JLabel[]									player_scores;
-	JButton[]									buttons;
-	JLabel										current_turn;
-	JMenuBar									menu_bar;
-	JMenu											menu_file;
-	JMenuItem									menu_new_game;
-	JMenuItem									menu_exit;
-	JMenu											menu_edit;
-	JMenuItem									menu_undo;
-	JMenu											menu_help;
-	JMenuItem									menu_about;
+	Turn											turn							= Turn.NO_PLAYERS;
+	protected Square					game_winner				= Square.EMPTY;
+	protected Player					player_one;
+	protected Player					player_two;
+	protected Board						board;
 
-	// Here's a video on java programming that may be helpful:
-	// https://youtu.be/dQw4w9WgXcQ
+	private BorderLayout			layout;
+	private JPanel						panel;
+	private GridBagLayout			grid;
+	private JPanel[]					player_panels;
+	private JLabel[]					player_names;
+	private JLabel[]					player_scores;
+	private JButton[]					buttons;
+	private JLabel						current_turn;
+	private JMenuBar					menu_bar;
+	private JMenu							menu_file;
+	private JMenuItem					menu_new_game;
+	private JMenuItem					menu_exit;
+	private JMenu							menu_edit;
+	private JMenuItem					menu_undo;
+	private JMenu							menu_help;
+	private JMenuItem					menu_about;
 
 	/**
 	 * 
@@ -310,7 +305,7 @@ public class MainScreen extends JFrame
 		this.setJMenuBar(menu_bar);
 
 		// Create player panels
-		JPanel[] player_panels = new JPanel[2];
+		player_panels = new JPanel[2];
 		final String[] locations =
 			{ BorderLayout.WEST, BorderLayout.EAST };
 		final String[] symbols =
@@ -417,7 +412,27 @@ public class MainScreen extends JFrame
 			{
 				player = "no one";
 			}
-			System.out.println("Game was won by " + player);
+
+			int result = 0;
+			String winner;
+			switch (game_winner)
+			{
+				case X:
+					winner = player_one.getName();
+					break;
+				case O:
+					winner = player_two.getName();
+					break;
+				case EMPTY:
+				default:
+					winner = "Nobody";
+			}
+
+			String[] options =
+				{ "Play again", "New players", "Quit" };
+			result = JOptionPane.showOptionDialog(getParent(),
+				game_winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 			// TODO Add win screen
 		}
 		else
@@ -571,11 +586,6 @@ public class MainScreen extends JFrame
 		}
 
 		updateTurnIndicator();
-	}
-
-	protected void updateScore()
-	{
-		// TODO update score
 	}
 
 	protected void undo()
