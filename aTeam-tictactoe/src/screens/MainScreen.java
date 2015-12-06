@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -406,8 +405,8 @@ public class MainScreen extends JFrame
 			{
 				// TODO Handle error
 			}
-			player_one = new Player(player_names[1]);
-			player_two = new Player(player_names[2]);
+			player_one = new Player(player_names[0]);
+			player_two = new Player(player_names[1]);
 		}
 
 		turn = Turn.PLAYER_ONE;
