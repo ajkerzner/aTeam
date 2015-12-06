@@ -4,12 +4,15 @@
 package screens;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -21,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.BevelBorder;
 
 import game.Board;
 import game.Player;
@@ -66,7 +70,7 @@ public class MainScreen extends JFrame
 
 	BorderLayout							layout;
 	JPanel										panel;
-	GridLayout								grid;
+	GridBagLayout							grid;
 	JButton[]									buttons;
 	JLabel[]									player_names;
 	JMenuBar									menu_bar;
@@ -96,38 +100,40 @@ public class MainScreen extends JFrame
 		// Set look-and-feel
 		setDefaultLookAndFeelDecorated(true);
 
-		// Set default size
-		setSize(1280, 720);
-
 		// Set layout
 		layout = new BorderLayout(20, 20);
 		setLayout(layout);
 
-		grid = new GridLayout(3, 3);
-
 		// For inspiration, see
 		// http://stackoverflow.com/questions/16075022/making-a-jpanel-square
-		panel = new JPanel()
-		{
-			/*
-			 * (non-Javadoc)
-			 * @see javax.swing.JComponent#getPreferredSize()
-			 */
-			@Override
-			public Dimension getPreferredSize()
-			{
-				Dimension d = super.getPreferredSize();
-				int width = d.width;
-				int height = d.height;
-				int side_length = (width < height ? width : height);
-				return new Dimension(side_length, side_length);
-			}
-		};
+		panel = new JPanel();
+		// panel.setSize(100, 100);
+
+		// Grid layout
+		grid = new GridBagLayout();
 		panel.setLayout(grid);
-		panel.setSize(panel.getPreferredSize());
+
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 3;
+		constraints.gridheight = 3;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
+
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+
+		final int[] position =
+			{ GridBagConstraints.SOUTHWEST, GridBagConstraints.SOUTH,
+				GridBagConstraints.SOUTHEAST, GridBagConstraints.WEST,
+				GridBagConstraints.CENTER, GridBagConstraints.EAST,
+				GridBagConstraints.NORTHWEST, GridBagConstraints.NORTH,
+				GridBagConstraints.NORTHEAST
+
+		};
 		add(panel, BorderLayout.CENTER);
 		buttons = new JButton[9];
-		// GridLayout
 
 		final int[] order =
 			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
@@ -142,7 +148,10 @@ public class MainScreen extends JFrame
 			buttons[i] = new JButton(Integer.toString(i + 1));
 			buttons[i].setName(Integer.toString(i + 1));
 			buttons[i].setText("");
+			buttons[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
 			buttons[i].setFocusable(false);
+
 			buttons[i].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 42));
 			buttons[i].addActionListener(new ActionListener()
 			{
@@ -159,7 +168,10 @@ public class MainScreen extends JFrame
 
 			// Disable button
 			buttons[i].setEnabled(false);
-			panel.add(buttons[i]);
+			buttons[i].setSize(100, 100);
+			buttons[i].setPreferredSize(buttons[i].getSize());
+			constraints.anchor = position[i];
+			panel.add(buttons[i], constraints);
 		}
 
 		// Create Menu Bar
@@ -292,7 +304,9 @@ public class MainScreen extends JFrame
 
 		// https://youtu.be/dQw4w9WgXcQ
 
-		// Prevents evil location placement.
+		// Set default size
+		setSize(1280, 720);
+
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
 	}
@@ -378,6 +392,7 @@ public class MainScreen extends JFrame
 		if (get_new_players)
 		{
 			// Call NameScreen
+			System.out.println("Open NameScreen");
 			player_one = new Player();
 			player_two = new Player();
 		}
