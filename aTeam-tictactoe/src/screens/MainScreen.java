@@ -91,10 +91,10 @@ public class MainScreen extends JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Set default size
-		setSize(640, 480);
+		setSize(1280, 720);
 
 		// Set layout
-		layout = new BorderLayout();
+		layout = new BorderLayout(20, 20);
 		setLayout(layout);
 
 		grid = new GridLayout(3, 3);
@@ -102,7 +102,8 @@ public class MainScreen extends JFrame
 		panel.setLayout(grid);
 		add(panel, BorderLayout.CENTER);
 		buttons = new JButton[9];
-		// GridLayout.;
+		// GridLayout
+
 		final int[] order =
 			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
 		final int[] keys =
@@ -299,6 +300,7 @@ public class MainScreen extends JFrame
 		if (board.next(location, this_move))
 		{
 			// Game is over
+			menu_undo.setEnabled(false);
 			game_winner = board.getLastPlayer();
 			turn = Turn.NO_PLAYERS;
 			for (JButton button : buttons)
