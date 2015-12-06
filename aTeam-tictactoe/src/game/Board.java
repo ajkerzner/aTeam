@@ -280,7 +280,7 @@ public class Board
 	}
 
 	/**
-	 * @see {@link Board#isGameOver(boolean force_check)
+	 * @see Board#isGameOver(boolean force_check)
 	 */
 	public boolean isGameOver()
 	{
@@ -308,8 +308,6 @@ public class Board
 	 *          game-over
 	 * 
 	 * @return true, if the game is over according to {@link Board#game_over}
-	 * 
-	 * @author AlexKerzner
 	 */
 	public boolean isGameOver(boolean force_check)
 	{
