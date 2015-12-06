@@ -26,7 +26,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 
 import game.Board;
-import game.NameScreen;
+import screens.NameScreen;
 import game.Player;
 import game.Square;
 
@@ -400,7 +400,7 @@ public class MainScreen extends JFrame
 			// Call NameScreen
 			String[] player_names =
 				{ "Player 1", "Player 2" };
-			// player_names = NameScreen.getPlayerNames();
+			player_names = NameScreen.getPlayerNames();
 			if (player_names.length != 2)
 			{
 				// TODO Handle error
