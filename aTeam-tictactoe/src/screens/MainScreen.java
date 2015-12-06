@@ -4,6 +4,7 @@
 package screens;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import game.Board;
 import game.Player;
@@ -90,6 +93,9 @@ public class MainScreen extends JFrame
 		// Set default close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		// Set look-and-feel
+		setDefaultLookAndFeelDecorated(true);
+
 		// Set default size
 		setSize(1280, 720);
 
@@ -98,8 +104,27 @@ public class MainScreen extends JFrame
 		setLayout(layout);
 
 		grid = new GridLayout(3, 3);
-		panel = new JPanel();
+
+		// For inspiration, see
+		// http://stackoverflow.com/questions/16075022/making-a-jpanel-square
+		panel = new JPanel()
+		{
+			/*
+			 * (non-Javadoc)
+			 * @see javax.swing.JComponent#getPreferredSize()
+			 */
+			@Override
+			public Dimension getPreferredSize()
+			{
+				Dimension d = super.getPreferredSize();
+				int width = d.width;
+				int height = d.height;
+				int side_length = (width < height ? width : height);
+				return new Dimension(side_length, side_length);
+			}
+		};
 		panel.setLayout(grid);
+		panel.setSize(panel.getPreferredSize());
 		add(panel, BorderLayout.CENTER);
 		buttons = new JButton[9];
 		// GridLayout
@@ -117,6 +142,7 @@ public class MainScreen extends JFrame
 			buttons[i] = new JButton(Integer.toString(i + 1));
 			buttons[i].setName(Integer.toString(i + 1));
 			buttons[i].setText("");
+			buttons[i].setFocusable(false);
 			buttons[i].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 42));
 			buttons[i].addActionListener(new ActionListener()
 			{
@@ -412,9 +438,35 @@ public class MainScreen extends JFrame
 
 	public static void main(String[] args)
 	{
-		// Suppressed because constructor does all the work
-		@SuppressWarnings("unused")
-		MainScreen screen = new MainScreen();
+
+		// See
+		// https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html#programmatic
+		// for how to do this
+
+		// Warning: this is close to example code.
+		try
+		{
+			// Set System Look and Feel
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (UnsupportedLookAndFeelException error)
+		{
+			error.printStackTrace();
+		}
+		catch (ClassNotFoundException error)
+		{
+			error.printStackTrace();
+		}
+		catch (InstantiationException error)
+		{
+			error.printStackTrace();
+		}
+		catch (IllegalAccessException error)
+		{
+			error.printStackTrace();
+		}
+
+		new MainScreen();
 	}
 
 }
