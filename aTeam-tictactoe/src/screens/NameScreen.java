@@ -56,7 +56,7 @@ public class NameScreen
 			player_names[1] = text_field_two.getText();
 			if (player_names[0] == null || player_names[1] == null)
 			{
-				JOptionPane.showMessageDialog(panel, "Please enter a name for both players 1 and 2", "Name Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(panel, "Please type in a name for both players 1 and 2", "Name Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else
