@@ -1,6 +1,13 @@
 /**
+ * @title MainScreen.java
+ * @version 1.0
+ * @author AlexKerzner
+ * @author JosephMiller
+ * @author RonaldDrescher
+ * @author BenjaminDodson
  * 
  */
+
 package screens;
 
 import java.awt.BorderLayout;
@@ -30,28 +37,25 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 
-import game.AboutScreen;
 import game.Board;
 import game.Player;
 import game.Square;
 
 /**
  * 
- * PROOF OF CONCEPT
+ * The Main Screen.
  * 
  * @author AlexKerzner
- * @author Joe
- * @author Ben
+ * @author JosephMiller
+ * @author BenjaminDodson
+ * @author RonaldDrescher
  * 
- * 
+ * @see Board
  */
 public class MainScreen extends JFrame
 {
 	/**
 	 * An enumerated value representing the players
-	 * 
-	 * @author AlexKerzner
-	 *
 	 */
 	protected enum Turn
 	{
@@ -64,8 +68,18 @@ public class MainScreen extends JFrame
 	 * Default serial version UID
 	 */
 	private static final long	serialVersionUID	= 1L;
+
+	/**
+	 * Fixed width of the Main Screen
+	 */
 	private static final int	WIDTH							= 1000;
+
+	/**
+	 * Fixed height of the Main Screen
+	 */
 	private static final int	HEIGHT						= 500;
+
+	// Variable initialization
 	Turn											turn							= Turn.NO_PLAYERS;
 	protected Square					game_winner				= Square.EMPTY;
 	protected Player					player_one;
@@ -424,7 +438,10 @@ public class MainScreen extends JFrame
 		newGame(true);
 	}
 
-	protected boolean updatePlayerNames()
+	/**
+	 * Updates the player names.
+	 */
+	protected void updatePlayerNames()
 	{
 		String player_one_name = player_one.getName();
 		String player_two_name = player_two.getName();
@@ -441,17 +458,21 @@ public class MainScreen extends JFrame
 
 		this.player_names[0].setText(" X - " + player_one_name);
 		this.player_names[1].setText(" O - " + player_two_name);
-		return true;
 	}
 
-	protected boolean updateScore()
+	/**
+	 * Updates the score indicator.
+	 */
+	protected void updateScore()
 	{
 		player_scores[0].setText(" Score: " + player_one.getScore());
 		player_scores[1].setText(" Score: " + player_two.getScore());
-		return true;
 	}
 
-	protected boolean updateTurnIndicator()
+	/**
+	 * Updates the turn indicator.
+	 */
+	protected void updateTurnIndicator()
 	{
 		switch (turn)
 		{
@@ -467,10 +488,15 @@ public class MainScreen extends JFrame
 				break;
 
 		}
-		return true;
 	}
 
-	public boolean move(int location)
+	/**
+	 * Plays a move.
+	 * 
+	 * @param location
+	 *          the location of the move
+	 */
+	public void move(int location)
 	{
 		Square this_move = Square.EMPTY;
 		String player = "";
@@ -546,10 +572,10 @@ public class MainScreen extends JFrame
 				switch (game_winner)
 				{
 					case X:
-						turn = Turn.PLAYER_ONE;
+						turn = Turn.PLAYER_TWO;
 						break;
 					case O:
-						turn = Turn.PLAYER_TWO;
+						turn = Turn.PLAYER_ONE;
 						break;
 					case EMPTY:
 						switch (turn)
@@ -586,7 +612,6 @@ public class MainScreen extends JFrame
 		}
 
 		updateTurnIndicator();
-		return true;
 	}
 
 	/**
@@ -600,6 +625,12 @@ public class MainScreen extends JFrame
 		System.exit(error_code);
 	}
 
+	/**
+	 * Prompts for new players.
+	 * 
+	 * @return a String array containing two strings - the names of player one and
+	 *         player two
+	 */
 	protected String[] getPlayerNames()
 	{
 		final String player_name_tooltip = "Names must be between 1 and 15 letters";
@@ -654,7 +685,7 @@ public class MainScreen extends JFrame
 			}
 			else
 			{
-				System.exit(0);
+				exitGame(0);
 			}
 		}
 		while ((player_names[0].length() < 1) || (player_names[0].length() > 15)
@@ -663,6 +694,9 @@ public class MainScreen extends JFrame
 
 	}
 
+	/**
+	 * Start a new game with existing players
+	 */
 	protected void newGame()
 	{
 		newGame(false);
@@ -718,6 +752,9 @@ public class MainScreen extends JFrame
 		updateTurnIndicator();
 	}
 
+	/**
+	 * Undo the last move, if possible.
+	 */
 	protected void undo()
 	{
 		if (board.isUndoPossible())
@@ -727,6 +764,8 @@ public class MainScreen extends JFrame
 			if (result <= 0)
 			{
 				// Unknown error
+				System.err.println("Error - board.undo() failed. Contact aTeam.");
+				System.exit(1);
 			}
 			else
 			{
@@ -752,8 +791,10 @@ public class MainScreen extends JFrame
 		}
 	}
 
-	AboutScreen about = new AboutScreen();
-
+	/**
+	 * Shows the About Screen.
+	 * 
+	 */
 	protected void about()
 	{
 		String about_text = "<html><center>" + "<H2>Written by aTeam</H2>"
@@ -765,6 +806,12 @@ public class MainScreen extends JFrame
 
 	}
 
+	/**
+	 * Main method
+	 * 
+	 * @param args
+	 *          the command line arguments
+	 */
 	public static void main(String[] args)
 	{
 		try
