@@ -4,6 +4,7 @@
 package screens;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -106,6 +107,7 @@ public class MainScreen extends JFrame
 			buttons[i] = new JButton(Integer.toString(i + 1));
 			buttons[i].setName(Integer.toString(i + 1));
 			buttons[i].setText("");
+			buttons[i].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 42));
 			buttons[i].addActionListener(new ActionListener()
 			{
 				@Override
