@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
@@ -109,8 +110,8 @@ public class MainScreen extends JFrame
 		setLayout(layout);
 
 		// Create temporary players
-		player_one = new Player();
-		player_two = new Player();
+		player_one = new Player("               ");
+		player_two = new Player("               ");
 
 		// For inspiration, see
 		// http://stackoverflow.com/questions/16075022/making-a-jpanel-square
@@ -128,7 +129,7 @@ public class MainScreen extends JFrame
 		constraints.gridheight = 3;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
-		constraints.insets = new Insets(100, 100, 100, 100);
+		constraints.insets = new Insets(50, 50, 50, 50);
 
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 
@@ -164,7 +165,7 @@ public class MainScreen extends JFrame
 
 			buttons[i].setFocusable(false);
 
-			buttons[i].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 42));
+			buttons[i].setFont(new Font(Font.MONOSPACED, Font.PLAIN, 42));
 			buttons[i].addActionListener(new ActionListener()
 			{
 				@Override
@@ -306,12 +307,12 @@ public class MainScreen extends JFrame
 
 		player_names[0] = new JLabel();
 		player_names[0].setText("X - " + player_one.getName());
-		player_names[0].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
+		player_names[0].setFont(new Font(Font.MONOSPACED, Font.PLAIN, 38));
 		add(player_names[0], BorderLayout.WEST);
 
 		player_names[1] = new JLabel();
 		player_names[1].setText("O - " + player_two.getName());
-		player_names[1].setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 38));
+		player_names[1].setFont(new Font(Font.MONOSPACED, Font.PLAIN, 38));
 		add(player_names[1], BorderLayout.EAST);
 
 		// https://youtu.be/dQw4w9WgXcQ
@@ -391,38 +392,54 @@ public class MainScreen extends JFrame
 
 	protected String[] getPlayerNames()
 	{
+		Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
 
 		// Message panel
 		JPanel panel = new JPanel();
 
 		JLabel label_one = new JLabel("Player 1: ");
+		label_one.setFont(font);
 		panel.add(label_one);
-		JTextField text_field_one = new JTextField("Player 1", 15);
+		JTextField text_field_one = new JTextField("", 15);
+		text_field_one.setFont(font);
 		panel.add(text_field_one);
 
-		panel.add(new JSeparator());
+		panel.add(new JSeparator(SwingConstants.HORIZONTAL));
 
 		JLabel label_two = new JLabel("Player 2: ");
+		label_two.setFont(font);
 		panel.add(label_two);
-		JTextField text_field_two = new JTextField("Player 2", 15);
+		JTextField text_field_two = new JTextField("", 15);
+		text_field_two.setFont(font);
 		panel.add(text_field_two);
-		int result;
+		int result = JOptionPane.CANCEL_OPTION;
+		String player_names[];
 		// Ask for player names
-		// TODO do.. while loop -> repeat prompt if a player name is the wrong size.
-		result = JOptionPane.showConfirmDialog(getParent(), panel,
-			"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
-
-		String[] player_names = new String[2];
-
-		if (result == JOptionPane.OK_OPTION)
+		do
 		{
-			player_names[0] = text_field_one.getText();
-			player_names[1] = text_field_two.getText();
+			if (result == JOptionPane.OK_OPTION)
+			{
+				JOptionPane.showMessageDialog(panel,
+					"Please type in a name for both players, 1 to 15 characters",
+					"Name Error", JOptionPane.ERROR_MESSAGE);
+			}
+			result = JOptionPane.showConfirmDialog(getParent(), panel,
+				"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
+
+			player_names = new String[2];
+
+			if (result == JOptionPane.OK_OPTION)
+			{
+				player_names[0] = text_field_one.getText();
+				player_names[1] = text_field_two.getText();
+			}
+			else
+			{
+				System.exit(0);
+			}
 		}
-		else
-		{
-			System.exit(0);
-		}
+		while ((player_names[0].length() < 1) || (player_names[0].length() > 15)
+			|| (player_names[1].length() < 1) || (player_names[1].length() > 15));
 		return player_names;
 
 	}
@@ -455,8 +472,20 @@ public class MainScreen extends JFrame
 			}
 			player_one = new Player(player_names[0]);
 			player_two = new Player(player_names[1]);
-			this.player_names[0].setText(player_one.getName());
-			this.player_names[1].setText(player_two.getName());
+			String player_one_name = player_one.getName();
+			String player_two_name = player_two.getName();
+			while (player_one_name.length() < 15)
+			{
+				// append " " to name
+				player_one_name = player_one_name + " ";
+			}
+			while (player_two_name.length() < 15)
+			{
+				// append " " to name
+				player_two_name = player_two_name + " ";
+			}
+			this.player_names[0].setText("X - " + player_one_name);
+			this.player_names[1].setText("O - " + player_two_name);
 
 		}
 
