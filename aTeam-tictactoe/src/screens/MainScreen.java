@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 
+import game.AboutScreen;
 import game.Board;
 import game.NameScreen;
 import game.Player;
@@ -271,9 +272,9 @@ public class MainScreen extends JFrame
 		menu_about = new JMenuItem("About");
 		// Add keyboard shortcut
 		menu_about.setAccelerator(
-			KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 		// Add mnemonic
-		menu_about.setMnemonic(KeyEvent.VK_H);
+		menu_about.setMnemonic(KeyEvent.VK_A);
 		// Add action to call about()
 		menu_about.addActionListener(new ActionListener()
 		{
@@ -459,9 +460,11 @@ public class MainScreen extends JFrame
 		}
 	}
 
+	AboutScreen about = new AboutScreen();
 	protected void about()
 	{
-		System.out.println("About screen will have opened.");
+		//System.out.println("About screen will have opened.");
+		about.setVisible(true);
 	}
 
 	public static void main(String[] args)
