@@ -120,7 +120,7 @@ public class MainScreen extends JFrame
 		constraints.gridheight = 3;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
-		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.insets = new Insets(100, 100, 100, 100);
 
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 
@@ -137,10 +137,14 @@ public class MainScreen extends JFrame
 
 		final int[] order =
 			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
+		// final int[] keys =
+		// { KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
+		// KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
+		// KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
 		final int[] keys =
-			{ KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
-				KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
-				KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
+			{ KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
+				KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8,
+				KeyEvent.VK_9 };
 		for (int i : order)
 		{
 			// This subtracts 1 from each i-value
@@ -163,8 +167,10 @@ public class MainScreen extends JFrame
 				}
 			});
 			// Add keyboard shortcut
-			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(keys[i], 0), buttons[i].getAction());
+			// buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+			// .put(KeyStroke.getKeyStroke(keys[i], 0), buttons[i].getAction());
+			// buttons[i].getActionMap().put(buttons[i].getAction(),
+			// buttons[i].getActionListeners());
 
 			// Disable button
 			buttons[i].setEnabled(false);
@@ -392,7 +398,7 @@ public class MainScreen extends JFrame
 		if (get_new_players)
 		{
 			// Call NameScreen
-			System.out.println("Open NameScreen");
+
 			player_one = new Player();
 			player_two = new Player();
 		}
