@@ -4,9 +4,8 @@
 package screens;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -14,10 +13,13 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
 
-import javax.swing.AbstractButton;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,7 +27,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -35,7 +36,6 @@ import javax.swing.border.BevelBorder;
 
 import game.AboutScreen;
 import game.Board;
-import screens.NameScreen;
 import game.Player;
 import game.Square;
 
@@ -44,9 +44,7 @@ import game.Square;
  * PROOF OF CONCEPT
  * 
  * @author AlexKerzner
- * 
  * @author Joe
- * 
  * @author Ben
  * 
  * 
@@ -79,6 +77,7 @@ public class MainScreen extends JFrame
 
 	private BorderLayout			layout;
 	private JPanel						panel;
+	private JPanel						game_panel;
 	private GridBagLayout			grid;
 	private JPanel[]					player_panels;
 	private JLabel[]					player_names;
@@ -109,9 +108,13 @@ public class MainScreen extends JFrame
 		// Set look-and-feel
 		setDefaultLookAndFeelDecorated(true);
 
+		panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		add(panel);
+
 		// Set layout
 		layout = new BorderLayout(20, 20);
-		setLayout(layout);
+		panel.setLayout(layout);
 
 		// Create temporary players
 		player_one = new Player("               ");
@@ -120,22 +123,22 @@ public class MainScreen extends JFrame
 		player_names = new JLabel[2];
 		player_scores = new JLabel[2];
 
-		panel = new JPanel();
+		game_panel = new JPanel();
 
 		// Grid layout
 		grid = new GridBagLayout();
-		panel.setLayout(grid);
+		game_panel.setLayout(grid);
 
 		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridx = GridBagConstraints.CENTER;
+		constraints.gridy = GridBagConstraints.CENTER;
 		constraints.gridwidth = 3;
 		constraints.gridheight = 3;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
-		constraints.insets = new Insets(50, 50, 50, 50);
+		constraints.insets = new Insets(5, 5, 5, 5);
 
-		constraints.anchor = GridBagConstraints.NORTHWEST;
+		constraints.anchor = 0;
 
 		final int[] position =
 			{ GridBagConstraints.SOUTHWEST, GridBagConstraints.SOUTH,
@@ -145,19 +148,16 @@ public class MainScreen extends JFrame
 				GridBagConstraints.NORTHEAST
 
 		};
-		add(panel, BorderLayout.CENTER);
+		panel.add(game_panel, BorderLayout.CENTER);
 		buttons = new JButton[9];
 
+		final Font button_font = new Font(Font.MONOSPACED, Font.PLAIN, 42);
 		final int[] order =
 			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
-		// final int[] keys =
-		// { KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
-		// KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
-		// KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
 		final int[] keys =
-			{ KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
-				KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8,
-				KeyEvent.VK_9 };
+			{ KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
+				KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
+				KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
 		for (int i : order)
 		{
 			// This subtracts 1 from each i-value
@@ -169,16 +169,29 @@ public class MainScreen extends JFrame
 
 			buttons[i].setFocusable(false);
 
-			buttons[i].setFont(new Font(Font.MONOSPACED, Font.PLAIN, 42));
-			buttons[i].addActionListener(new ActionListener()
+			buttons[i].setFont(button_font);
+			buttons[i].setAction(new AbstractAction()
 			{
+				/**
+				 * Default serial version UID
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent event)
 				{
 					// Calls move(button_number).
-					move(Integer.parseInt(((JButton) event.getSource()).getName()));
+					if (((JButton) event.getSource()).isEnabled())
+					{
+						move(Integer.parseInt(((JButton) event.getSource()).getName()));
+					}
 				}
 			});
+
+			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(keys[i], 0), String.valueOf(i));
+			buttons[i].getActionMap().put(String.valueOf(i), buttons[i].getAction());
+
 			// Add keyboard shortcut
 			// buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 			// .put(KeyStroke.getKeyStroke(keys[i], 0), buttons[i].getAction());
@@ -190,7 +203,7 @@ public class MainScreen extends JFrame
 			buttons[i].setSize(100, 100);
 			buttons[i].setPreferredSize(buttons[i].getSize());
 			constraints.anchor = position[i];
-			panel.add(buttons[i], constraints);
+			game_panel.add(buttons[i], constraints);
 		}
 
 		// Create Menu Bar
@@ -199,7 +212,6 @@ public class MainScreen extends JFrame
 		// Create File menu
 		menu_file = new JMenu("File");
 		menu_file.setMnemonic(KeyEvent.VK_F);
-		// KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.ALT_MASK));
 
 		/**
 		 * Create File->New_Game menu item
@@ -210,10 +222,9 @@ public class MainScreen extends JFrame
 			KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 		// Add mnemonic
 		menu_new_game.setMnemonic(KeyEvent.VK_N);
-		// Add action to call newGame()
+		// Add action to call newGame(true)
 		menu_new_game.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
@@ -235,6 +246,7 @@ public class MainScreen extends JFrame
 		// Add action to call exitGame(0)
 		menu_exit.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent event)
 			{
 				// Exit normally
@@ -311,7 +323,7 @@ public class MainScreen extends JFrame
 		final String[] locations =
 			{ BorderLayout.WEST, BorderLayout.EAST };
 		final String[] symbols =
-			{ "X - ", "O - " };
+			{ " X - ", " O - " };
 		Player[] players =
 			{ player_one, player_two };
 		final Font panel_font = new Font(Font.MONOSPACED, Font.PLAIN, 24);
@@ -319,12 +331,13 @@ public class MainScreen extends JFrame
 		{
 			// Create panel
 			player_panels[i] = new JPanel();
-			player_panels[i].setLayout(new BorderLayout(5, 5));
+			player_panels[i].setLayout(new BorderLayout(10, 10));
 
 			// Add player name
 			JLabel name = new JLabel(symbols[i] + players[i].getName());
 			name.setFont(panel_font);
 			player_names[i] = name;
+			player_names[i].setBorder(BorderFactory.createLineBorder(new Color(0)));
 			player_panels[i].add(name, BorderLayout.NORTH);
 
 			// Add player name
@@ -334,14 +347,16 @@ public class MainScreen extends JFrame
 			player_panels[i].add(score, BorderLayout.CENTER);
 
 			// Add panel
-			add(player_panels[i], locations[i]);
+			panel.add(player_panels[i], locations[i]);
 
 		}
 
 		current_turn = new JLabel("Please start a new game");
 		current_turn.setFont(panel_font);
 		current_turn.setHorizontalAlignment(SwingConstants.CENTER);
-		add(current_turn, BorderLayout.SOUTH);
+		panel.add(current_turn, BorderLayout.SOUTH);
+
+		add(panel);
 
 		// Set default size
 		setSize(1280, 720);
@@ -370,15 +385,15 @@ public class MainScreen extends JFrame
 			player_two_name = player_two_name + " ";
 		}
 
-		this.player_names[0].setText("X - " + player_one_name);
-		this.player_names[1].setText("O - " + player_two_name);
+		this.player_names[0].setText(" X - " + player_one_name);
+		this.player_names[1].setText(" O - " + player_two_name);
 		return true;
 	}
 
 	protected boolean updateScore()
 	{
-		player_scores[0].setText("Score: " + player_one.getScore());
-		player_scores[1].setText("Score: " + player_two.getScore());
+		player_scores[0].setText(" Score: " + player_one.getScore());
+		player_scores[1].setText(" Score: " + player_two.getScore());
 		return true;
 	}
 
@@ -466,7 +481,7 @@ public class MainScreen extends JFrame
 			updateScore();
 
 			String[] options =
-				{ "Play again", "New players", "Quit" };
+				{ "Play again", "Switch players", "Quit" };
 			result = JOptionPane.showOptionDialog(getParent(),
 				winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
