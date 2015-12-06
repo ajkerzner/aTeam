@@ -271,9 +271,9 @@ public class MainScreen extends JFrame
 		menu_about = new JMenuItem("About");
 		// Add keyboard shortcut
 		menu_about.setAccelerator(
-			KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
+			KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 		// Add mnemonic
-		menu_about.setMnemonic(KeyEvent.VK_H);
+		menu_about.setMnemonic(KeyEvent.VK_A);
 		// Add action to call about()
 		menu_about.addActionListener(new ActionListener()
 		{
