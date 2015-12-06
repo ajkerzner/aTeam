@@ -28,7 +28,7 @@ public class NameScreen
 	 */
 	public static String[] getPlayerNames()
 	{
-		// Containing panel
+		// Message panel
 		JPanel panel = new JPanel();
 
 		JLabel label_one = new JLabel("Player 1: ");
