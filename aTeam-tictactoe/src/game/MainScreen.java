@@ -132,7 +132,7 @@ public class MainScreen extends JFrame
 	/**
 	 * Release version
 	 */
-	private static final double	VERSION						= 1.1;
+	private static final double	VERSION						= 1.2;
 
 	/**
 	 * Fixed width of the Main Screen
@@ -743,7 +743,13 @@ public class MainScreen extends JFrame
 		JLabel label_one = new JLabel(" Player 1's Name: ");
 		label_one.setFont(font);
 		panel.add(label_one);
-		JTextField text_field_one = new JTextField(player_one.getName().trim(), 15);
+		String name_one = player_one.getName().trim();
+		if (name_one.equals("Player 1"))
+		{
+			// Clear Player 1 default name
+			name_one = "";
+		}
+		JTextField text_field_one = new JTextField(name_one, 15);
 		text_field_one.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
 
@@ -761,7 +767,13 @@ public class MainScreen extends JFrame
 		JLabel label_two = new JLabel(" Player 2's Name: ");
 		label_two.setFont(font);
 		panel.add(label_two);
-		JTextField text_field_two = new JTextField(player_two.getName().trim(), 15);
+		String name_two = player_two.getName().trim();
+		if (name_two.equals("Player 2"))
+		{
+			// Clear Player 2 default name
+			name_two = "";
+		}
+		JTextField text_field_two = new JTextField(name_two, 15);
 		text_field_two.setPreferredSize(text_field_two.getPreferredSize());
 		text_field_two.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
@@ -787,8 +799,24 @@ public class MainScreen extends JFrame
 		if (result == JOptionPane.OK_OPTION)
 		{
 			// Change players
-			player_names[0] = text_field_one.getText();
-			player_names[1] = text_field_two.getText();
+
+			// Player 1
+			name_one = text_field_one.getText().trim();
+			if (name_one.isEmpty())
+			{
+				// Set default name for player 1
+				name_one = "Player 1";
+			}
+			player_names[0] = name_one;
+
+			// Player 2
+			name_two = text_field_two.getText().trim();
+			if (name_two.isEmpty())
+			{
+				// Set default name for player 2
+				name_two = "Player 2";
+			}
+			player_names[1] = name_two;
 		}
 		else
 		{
