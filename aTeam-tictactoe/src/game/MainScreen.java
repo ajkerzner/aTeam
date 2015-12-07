@@ -1,8 +1,9 @@
 /**
  * @author AlexKerzner
- * @author JosephMiller
  * @author BenjaminDodson
  * @author RonaldDrescher
+ * @author WalterGoerling
+ * @author JosephMiller
  */
 
 package game;
@@ -39,11 +40,12 @@ import javax.swing.border.BevelBorder;
  * The Main Screen.
  * 
  * @author AlexKerzner
- * @author JosephMiller
  * @author BenjaminDodson
  * @author RonaldDrescher
+ * @author WalterGoerling
+ * @author JosephMiller
  * 
- * @version 1.0
+ * @version 1.1
  * 
  * @see Board
  */
@@ -62,43 +64,48 @@ public class MainScreen extends JFrame
 	/**
 	 * Default serial version UID
 	 */
-	private static final long	serialVersionUID	= 1L;
+	private static final long		serialVersionUID	= 1L;
+
+	/**
+	 * Release version
+	 */
+	private static final double	VERSION						= 1.1;
 
 	/**
 	 * Fixed width of the Main Screen
 	 */
-	private static final int	WIDTH							= 1000;
+	private static final int		WIDTH							= 1000;
 
 	/**
 	 * Fixed height of the Main Screen
 	 */
-	private static final int	HEIGHT						= 500;
+	private static final int		HEIGHT						= 500;
 
 	// Variable initialization
-	Turn											turn							= Turn.NO_PLAYERS;
-	protected Square					game_winner				= Square.EMPTY;
-	protected Player					player_one;
-	protected Player					player_two;
-	protected Board						board;
+	Turn												turn							= Turn.NO_PLAYERS;
+	protected Square						game_winner				= Square.EMPTY;
+	protected Player						player_one;
+	protected Player						player_two;
+	protected Board							board;
 
-	private BorderLayout			layout;
-	private JPanel						panel;
-	private JPanel						game_panel;
-	private GridBagLayout			grid;
-	private JPanel[]					player_panels;
-	private JLabel[]					player_names;
-	private JLabel[]					player_scores;
-	private JButton[]					buttons;
-	private JLabel						current_turn;
-	private JMenuBar					menu_bar;
-	private JMenu							menu_file;
-	private JMenuItem					menu_new_game;
-	private JMenuItem					menu_new_players;
-	private JMenuItem					menu_exit;
-	private JMenu							menu_edit;
-	private JMenuItem					menu_undo;
-	private JMenu							menu_help;
-	private JMenuItem					menu_about;
+	private BorderLayout				layout;
+	private JPanel							panel;
+	private JPanel							game_panel;
+	private GridBagLayout				grid;
+	private JPanel[]						player_panels;
+	private JLabel[]						player_names;
+	private JLabel[]						player_scores;
+	private JButton[]						buttons;
+	private JLabel							current_turn;
+	private JMenuBar						menu_bar;
+	private JMenu								menu_file;
+	private JMenuItem						menu_new_game;
+	private JMenuItem						menu_new_players;
+	private JMenuItem						menu_exit;
+	private JMenu								menu_edit;
+	private JMenuItem						menu_undo;
+	private JMenu								menu_help;
+	private JMenuItem						menu_about;
 
 	/**
 	 * 
@@ -330,7 +337,7 @@ public class MainScreen extends JFrame
 			}
 		});
 		// Add text
-		menu_edit.setText("Edit");
+		menu_undo.setText("Undo");
 		// Add keyboard shortcut
 		menu_undo.setAccelerator(
 			KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
@@ -365,7 +372,7 @@ public class MainScreen extends JFrame
 			}
 		});
 		// Add text
-		menu_help.setText("About");
+		menu_about.setText("About");
 		// Add keyboard shortcut
 		menu_about.setAccelerator(
 			KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
@@ -556,8 +563,8 @@ public class MainScreen extends JFrame
 			updateScore();
 
 			String[] options =
-				{ "Play again", "Switch players", "Exit" };
-			result = JOptionPane.showOptionDialog(getParent(),
+				{ "Play again", "New players", "Cancel" };
+			result = JOptionPane.showOptionDialog(getContentPane(),
 				winner + " won the game.", "Game Over", JOptionPane.CLOSED_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 			if (result == 0)
@@ -596,7 +603,7 @@ public class MainScreen extends JFrame
 			}
 			else
 			{
-				exitGame(0);
+				// Do nothing
 			}
 
 		}
@@ -664,11 +671,11 @@ public class MainScreen extends JFrame
 		{
 			if (result == JOptionPane.OK_OPTION)
 			{
-				JOptionPane.showMessageDialog(getParent(),
+				JOptionPane.showMessageDialog(getContentPane(),
 					"Please type in a name for both players, 1 to 15 characters",
 					"Name Error", JOptionPane.ERROR_MESSAGE);
 			}
-			result = JOptionPane.showConfirmDialog(getParent(), panel,
+			result = JOptionPane.showConfirmDialog(getContentPane(), panel,
 				"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
 
 			player_names = new String[2];
@@ -795,9 +802,9 @@ public class MainScreen extends JFrame
 		String about_text = "<html><center>" + "<H2>Written by aTeam</H2>"
 			+ "<H3>Benjamin Dodson<br>Ronnie Drescher<br>"
 			+ "Walter Goerling<br>Alexander Kerzner<br>Joseph Miller</H3>"
-			+ "<br><b>Tic-Tac-Toe version 1.0</b></center></html>";
-		JOptionPane.showMessageDialog(getParent(), about_text, "About Tic-Tac-Toe",
-			JOptionPane.INFORMATION_MESSAGE);
+			+ "<br><b>Tic-Tac-Toe version " + VERSION + "</b></center></html>";
+		JOptionPane.showMessageDialog(getContentPane(), about_text,
+			"About Tic-Tac-Toe", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
