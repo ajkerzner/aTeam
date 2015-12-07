@@ -3,6 +3,8 @@
  */
 package game;
 
+import java.awt.Toolkit;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
@@ -15,7 +17,7 @@ import javax.swing.text.DocumentFilter;
  * 
  * @author AlexKerzner
  * 
- * @version 1.0
+ * @version 1.1
  * 
  * @since 1.1
  * 
@@ -43,6 +45,9 @@ public class NameFilter extends DocumentFilter
 		{
 			// Inserted string will extend the document string past the maximum.
 			// Do not insert it.
+
+			// Beep
+			Toolkit.getDefaultToolkit().beep();
 			return;
 		}
 		else
@@ -80,6 +85,9 @@ public class NameFilter extends DocumentFilter
 		{
 			// Modification will put the total length past the maximum.
 			// Do nothing.
+
+			// Beep
+			Toolkit.getDefaultToolkit().beep();
 			return;
 		}
 		else

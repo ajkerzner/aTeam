@@ -520,11 +520,14 @@ public class MainScreen extends JFrame
 	}
 
 	/**
+	 * Switch turns
 	 * 
+	 * @see MainScreen
+	 * 
+	 * @since 1.1
 	 */
 	private void switchTurns()
 	{
-		// game_winner: X if X won last, O if O won last, else tie
 		if (board.isGameOver())
 		{
 			// Game is over
@@ -717,7 +720,30 @@ public class MainScreen extends JFrame
 		// Message panel
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
-		JLabel label_one = new JLabel("Player 1 Name: ");
+		JLabel info_label_one = new JLabel("Enter player names");
+		info_label_one.setFont(font);
+		panel.add(info_label_one);
+
+		JLabel info_label_two = new JLabel(" up to 15 letters.");
+		info_label_two.setFont(font);
+		panel.add(info_label_two);
+
+		JLabel info_label_three = new JLabel("   Leave blank for");
+		info_label_three.setFont(font);
+		panel.add(info_label_three);
+
+		JLabel info_label_four = new JLabel(" the defaults.    ");
+		info_label_four.setFont(font);
+		panel.add(info_label_four);
+
+		for (int i = 0; i < 2; i++)
+		{
+			JLabel separator = new JLabel("                  ");
+			separator.setFont(font);
+			panel.add(separator);
+		}
+
+		JLabel label_one = new JLabel(" Player 1's Name: ");
 		label_one.setFont(font);
 		panel.add(label_one);
 		JTextField text_field_one = new JTextField("Player 1", 15);
@@ -730,20 +756,28 @@ public class MainScreen extends JFrame
 
 		for (int i = 0; i < 2; i++)
 		{
-			JLabel separator = new JLabel("---------------");
+			JLabel separator = new JLabel("                  ");
 			separator.setFont(font);
 			panel.add(separator);
 		}
 
-		JLabel label_two = new JLabel("Player 2 Name: ");
+		JLabel label_two = new JLabel(" Player 2's Name: ");
 		label_two.setFont(font);
 		panel.add(label_two);
 		JTextField text_field_two = new JTextField("Player 2", 15);
+		text_field_two.setPreferredSize(text_field_two.getPreferredSize());
 		text_field_two.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
 		((AbstractDocument) text_field_two.getDocument())
 			.setDocumentFilter(new NameFilter());
 		panel.add(text_field_two);
+
+		for (int i = 0; i < 2; i++)
+		{
+			JLabel separator = new JLabel("                  ");
+			separator.setFont(font);
+			panel.add(separator);
+		}
 
 		int result = JOptionPane.CANCEL_OPTION;
 		String player_names[];
