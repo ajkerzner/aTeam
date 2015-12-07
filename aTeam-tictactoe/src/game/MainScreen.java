@@ -161,6 +161,7 @@ public class MainScreen extends JFrame
 	private JPanel[]						player_panels;
 	private JLabel[]						player_names;
 	private JLabel[]						player_scores;
+	private JPanel[]						panels;
 	private JButton[]						buttons;
 	private JLabel							current_turn;
 	private JMenuBar						menu_bar;
@@ -214,9 +215,9 @@ public class MainScreen extends JFrame
 		constraints.gridy = GridBagConstraints.CENTER;
 		constraints.gridwidth = 3;
 		constraints.gridheight = 3;
-		constraints.weightx = 1;
-		constraints.weighty = 1;
-		constraints.insets = new Insets(5, 5, 5, 5);
+		constraints.weightx = .5;
+		constraints.weighty = .5;
+		// constraints.insets = new Insets(5, 5, 5, 5);
 
 		constraints.anchor = 0;
 
@@ -228,7 +229,10 @@ public class MainScreen extends JFrame
 				GridBagConstraints.NORTHEAST
 
 		};
+		game_panel.setBackground(Color.GRAY);
 		panel.add(game_panel, BorderLayout.CENTER);
+
+		panels = new JPanel[9];
 		buttons = new JButton[9];
 
 		final Font button_font = new Font(Font.MONOSPACED, Font.PLAIN, 42);
@@ -243,13 +247,10 @@ public class MainScreen extends JFrame
 			// This subtracts 1 from each i-value
 			i = i - 1;
 			buttons[i] = new JButton(Integer.toString(i + 1));
+
+			// Set name
 			buttons[i].setName(Integer.toString(i + 1));
-			buttons[i].setText("");
-			buttons[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
-			buttons[i].setFocusable(false);
-
-			buttons[i].setFont(button_font);
 			// Adds action
 			buttons[i].setAction(new AbstractAction()
 			{
@@ -271,13 +272,24 @@ public class MainScreen extends JFrame
 			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(keys[i], 0), String.valueOf(i));
 			buttons[i].getActionMap().put(String.valueOf(i), buttons[i].getAction());
+			buttons[i].setText("");
+			buttons[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
+			buttons[i].setFocusable(false);
+
+			buttons[i].setFont(button_font);
 
 			// Disable button
 			buttons[i].setEnabled(false);
 			buttons[i].setSize(100, 100);
+
+			panels[i] = new JPanel();
+
+			panels[i].setSize(105, 105);
 			buttons[i].setPreferredSize(buttons[i].getSize());
 			constraints.anchor = position[i];
-			game_panel.add(buttons[i], constraints);
+			panels[i].add(buttons[i]);
+			game_panel.add(panels[i], constraints);
 		}
 
 		// Create Menu Bar
