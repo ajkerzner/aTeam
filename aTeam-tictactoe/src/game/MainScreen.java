@@ -14,7 +14,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -198,8 +197,8 @@ public class MainScreen extends JFrame
 		panel.setLayout(layout);
 
 		// Create temporary players
-		player_one = new Player("               ");
-		player_two = new Player("               ");
+		player_one = new Player("Player 1");
+		player_two = new Player("Player 2");
 
 		player_names = new JLabel[2];
 		player_scores = new JLabel[2];
@@ -470,10 +469,6 @@ public class MainScreen extends JFrame
 		player_panels = new JPanel[2];
 		final String[] locations =
 			{ BorderLayout.WEST, BorderLayout.EAST };
-		final String[] symbols =
-			{ " X - ", " O - " };
-		Player[] players =
-			{ player_one, player_two };
 		final Font panel_font = new Font(Font.MONOSPACED, Font.PLAIN, 24);
 		for (int i = 0; i < 2; i++)
 		{
@@ -482,14 +477,14 @@ public class MainScreen extends JFrame
 			player_panels[i].setLayout(new BorderLayout(10, 10));
 
 			// Add player name
-			JLabel name = new JLabel(symbols[i] + players[i].getName());
+			JLabel name = new JLabel();
 			name.setFont(panel_font);
 			player_names[i] = name;
 			player_names[i].setBorder(BorderFactory.createLineBorder(new Color(0)));
 			player_panels[i].add(name, BorderLayout.NORTH);
 
 			// Add player name
-			JLabel score = new JLabel("Score: " + players[i].getScore());
+			JLabel score = new JLabel();
 			score.setFont(panel_font);
 			player_scores[i] = score;
 			player_panels[i].add(score, BorderLayout.CENTER);
@@ -498,6 +493,8 @@ public class MainScreen extends JFrame
 			panel.add(player_panels[i], locations[i]);
 
 		}
+		updatePlayerNames();
+		updateScore();
 
 		current_turn = new JLabel("Please start a new game");
 		current_turn.setFont(panel_font);
@@ -728,11 +725,11 @@ public class MainScreen extends JFrame
 		info_label_two.setFont(font);
 		panel.add(info_label_two);
 
-		JLabel info_label_three = new JLabel("   Leave blank for");
+		JLabel info_label_three = new JLabel("Leave blank to use");
 		info_label_three.setFont(font);
 		panel.add(info_label_three);
 
-		JLabel info_label_four = new JLabel(" the defaults.    ");
+		JLabel info_label_four = new JLabel(" existing names.");
 		info_label_four.setFont(font);
 		panel.add(info_label_four);
 
@@ -746,7 +743,7 @@ public class MainScreen extends JFrame
 		JLabel label_one = new JLabel(" Player 1's Name: ");
 		label_one.setFont(font);
 		panel.add(label_one);
-		JTextField text_field_one = new JTextField("Player 1", 15);
+		JTextField text_field_one = new JTextField(player_one.getName().trim(), 15);
 		text_field_one.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
 
@@ -764,7 +761,7 @@ public class MainScreen extends JFrame
 		JLabel label_two = new JLabel(" Player 2's Name: ");
 		label_two.setFont(font);
 		panel.add(label_two);
-		JTextField text_field_two = new JTextField("Player 2", 15);
+		JTextField text_field_two = new JTextField(player_two.getName().trim(), 15);
 		text_field_two.setPreferredSize(text_field_two.getPreferredSize());
 		text_field_two.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
@@ -782,31 +779,23 @@ public class MainScreen extends JFrame
 		int result = JOptionPane.CANCEL_OPTION;
 		String player_names[];
 		// Ask for player names
-		do
+		result = JOptionPane.showConfirmDialog(getContentPane(), panel,
+			"Player Creation Screen", JOptionPane.OK_CANCEL_OPTION);
+
+		player_names = new String[2];
+
+		if (result == JOptionPane.OK_OPTION)
 		{
-			if (result == JOptionPane.OK_OPTION)
-			{
-				JOptionPane.showMessageDialog(getContentPane(),
-					"Please type in a name for both players, 1 to 15 characters",
-					"Name Error", JOptionPane.ERROR_MESSAGE);
-			}
-			result = JOptionPane.showConfirmDialog(getContentPane(), panel,
-				"Player Selection Screen", JOptionPane.OK_CANCEL_OPTION);
-
-			player_names = new String[2];
-
-			if (result == JOptionPane.OK_OPTION)
-			{
-				player_names[0] = text_field_one.getText();
-				player_names[1] = text_field_two.getText();
-			}
-			else
-			{
-				exitGame(0);
-			}
+			// Change players
+			player_names[0] = text_field_one.getText();
+			player_names[1] = text_field_two.getText();
 		}
-		while ((player_names[0].length() < 1) || (player_names[0].length() > 15)
-			|| (player_names[1].length() < 1) || (player_names[1].length() > 15));
+		else
+		{
+			// Do not change players
+			player_names[0] = player_one.getName();
+			player_names[1] = player_two.getName();
+		}
 		return player_names;
 
 	}
