@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
+import javax.swing.text.AbstractDocument;
 
 /**
  * 
@@ -53,12 +54,75 @@ public class MainScreen extends JFrame
 {
 	/**
 	 * An enumerated value representing the players
+	 * 
+	 * @see Square
 	 */
 	protected enum Turn
 	{
 		PLAYER_ONE,
 		PLAYER_TWO,
-		NO_PLAYERS
+		NO_PLAYERS;
+
+		/**
+		 * Returns a {@link Square} equivalent of a Turn.
+		 * 
+		 * @return a square
+		 * 
+		 * @see Turn
+		 */
+		protected Square getPlayer()
+		{
+			switch (this)
+			{
+				case PLAYER_ONE:
+					return Square.X;
+				case PLAYER_TWO:
+					return Square.O;
+				case NO_PLAYERS:
+				default:
+					return Square.EMPTY;
+			}
+		}
+
+		/**
+		 * Gets the Turn equivalent of a {@link Square}.
+		 * 
+		 * @return a Turn
+		 * 
+		 * @see Turn
+		 */
+		protected static Turn getTurn(Square square)
+		{
+			switch (square)
+			{
+				case X:
+					return Turn.PLAYER_ONE;
+				case O:
+					return Turn.PLAYER_TWO;
+				case EMPTY:
+				default:
+					return Turn.NO_PLAYERS;
+			}
+		}
+
+		/**
+		 * Switch to other player unless {@link Turn#NO_PLAYERS}.
+		 * 
+		 * @return the opposite Turn
+		 */
+		protected Turn switchPlayer()
+		{
+			switch (this)
+			{
+				case PLAYER_ONE:
+					return PLAYER_TWO;
+				case PLAYER_TWO:
+					return PLAYER_ONE;
+				case NO_PLAYERS:
+				default:
+					return NO_PLAYERS;
+			}
+		}
 	}
 
 	/**
@@ -84,9 +148,11 @@ public class MainScreen extends JFrame
 	// Variable initialization
 	Turn												turn							= Turn.NO_PLAYERS;
 	protected Square						game_winner				= Square.EMPTY;
+
+	protected Turn							first_turn				= Turn.PLAYER_ONE;
 	protected Player						player_one;
 	protected Player						player_two;
-	protected Board							board;
+	protected Board							board							= new Board();
 
 	private BorderLayout				layout;
 	private JPanel							panel;
@@ -228,6 +294,7 @@ public class MainScreen extends JFrame
 		// Add action to call newGame(false)
 		menu_new_game.setAction(new AbstractAction()
 		{
+
 			/**
 			 * Default serial version UID
 			 */
@@ -441,6 +508,37 @@ public class MainScreen extends JFrame
 	}
 
 	/**
+	 * 
+	 */
+	private void switchTurns()
+	{
+		// game_winner: X if X won last, O if O won last, else tie
+		if (board.isGameOver())
+		{
+			// Game is over
+			// Switch players if the player that won went first, or if a tie
+			if (first_turn == Turn.getTurn(game_winner)
+				|| Turn.NO_PLAYERS == Turn.getTurn(game_winner))
+			{
+				first_turn = first_turn.switchPlayer();
+				turn = first_turn;
+			}
+			else
+			{
+				// Otherwise, set the turn to first_turn
+				turn = first_turn;
+			}
+		}
+		else
+
+		{
+			// Game is not over
+			turn = turn.switchPlayer();
+		}
+
+	}
+
+	/**
 	 * Updates the player names.
 	 */
 	protected void updatePlayerNames()
@@ -500,47 +598,33 @@ public class MainScreen extends JFrame
 	 */
 	public void move(int location)
 	{
-		Square this_move = Square.EMPTY;
-		String player = "";
-		switch (turn)
-		{
-			case PLAYER_ONE:
-				player = "X";
-				this_move = Square.X;
-				turn = Turn.PLAYER_TWO;
-				break;
-			case PLAYER_TWO:
-				player = "O";
-				this_move = Square.O;
-				turn = Turn.PLAYER_ONE;
-				break;
-			case NO_PLAYERS:
-			default:
-				player = "";
-				this_move = Square.EMPTY;
-				turn = Turn.NO_PLAYERS;
-				break;
-		}
-		// Update button
-		buttons[location - 1].setText(player);
+		Square player = turn.getPlayer();
 
-		if (board.next(location, this_move))
+		// Update button
+		buttons[location - 1].setText(player.toString());
+
+		if (board.next(location, player))
 		{
 			// Game is over
+
+			Turn last_turn = turn;
+			turn = Turn.NO_PLAYERS;
+			updateTurnIndicator();
+			turn = last_turn;
+
 			menu_undo.setEnabled(false);
 			game_winner = board.getLastPlayer();
-			turn = Turn.NO_PLAYERS;
+
+			switchTurns();
+
 			for (JButton button : buttons)
 			{
 				button.setEnabled(false);
 			}
-			if (game_winner.isEmpty())
-			{
-				player = "no one";
-			}
 
 			int result = 0;
 			String winner;
+			// Update scores and get winner's name
 			switch (game_winner)
 			{
 				case X:
@@ -571,30 +655,6 @@ public class MainScreen extends JFrame
 			{
 				// Default
 				newGame(false);
-				switch (game_winner)
-				{
-					case X:
-						turn = Turn.PLAYER_TWO;
-						break;
-					case O:
-						turn = Turn.PLAYER_ONE;
-						break;
-					case EMPTY:
-						switch (turn)
-						{
-							case PLAYER_ONE:
-								turn = Turn.PLAYER_TWO;
-								break;
-							case PLAYER_TWO:
-								turn = Turn.PLAYER_ONE;
-								break;
-							case NO_PLAYERS:
-							default:
-								// Do nothing
-								break;
-						}
-				}
-
 			}
 			else if (result == 1)
 			{
@@ -609,11 +669,15 @@ public class MainScreen extends JFrame
 		}
 		else
 		{
+			// Continue game
+
 			menu_undo.setEnabled(true);
 			buttons[location - 1].setEnabled(false);
+
+			switchTurns();
+			updateTurnIndicator();
 		}
 
-		updateTurnIndicator();
 	}
 
 	/**
@@ -647,6 +711,9 @@ public class MainScreen extends JFrame
 		JTextField text_field_one = new JTextField("Player 1", 15);
 		text_field_one.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
+
+		((AbstractDocument) text_field_one.getDocument())
+			.setDocumentFilter(new NameFilter());
 		panel.add(text_field_one);
 
 		for (int i = 0; i < 2; i++)
@@ -662,6 +729,8 @@ public class MainScreen extends JFrame
 		JTextField text_field_two = new JTextField("Player 2", 15);
 		text_field_two.setFont(font);
 		text_field_one.setToolTipText(player_name_tooltip);
+		((AbstractDocument) text_field_two.getDocument())
+			.setDocumentFilter(new NameFilter());
 		panel.add(text_field_two);
 
 		int result = JOptionPane.CANCEL_OPTION;
@@ -712,19 +781,7 @@ public class MainScreen extends JFrame
 	 */
 	protected void newGame(boolean get_new_players)
 	{
-		board = new Board();
-		switch (turn)
-		{
-			case PLAYER_ONE:
-				turn = Turn.PLAYER_TWO;
-				break;
-			case PLAYER_TWO:
-				turn = Turn.PLAYER_ONE;
-				break;
-			case NO_PLAYERS:
-			default:
-				break;
-		}
+
 		// Get player names, if applicable
 		if (get_new_players)
 		{
@@ -740,9 +797,21 @@ public class MainScreen extends JFrame
 			player_two = new Player(player_names[1]);
 			updateScore();
 			updatePlayerNames();
+
+			first_turn = Turn.PLAYER_ONE;
+		}
+		else
+		{
+			if (!board.isGameOver())
+			{
+				// If game did not finish
+				turn = first_turn;
+			}
 		}
 
-		turn = Turn.PLAYER_ONE;
+		board = new Board();
+		turn = first_turn;
+
 		menu_undo.setEnabled(false);
 
 		for (JButton button : buttons)
@@ -773,18 +842,7 @@ public class MainScreen extends JFrame
 			{
 				buttons[result - 1].setEnabled(true);
 				buttons[result - 1].setText("");
-				switch (turn)
-				{
-					case PLAYER_ONE:
-						turn = Turn.PLAYER_TWO;
-						break;
-					case PLAYER_TWO:
-						turn = Turn.PLAYER_ONE;
-						break;
-					case NO_PLAYERS:
-					default:
-						break;
-				}
+				turn = turn.switchPlayer();
 
 			}
 			menu_undo.setEnabled(false);

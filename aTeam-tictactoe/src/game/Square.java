@@ -11,7 +11,7 @@ package game;
  * 
  * @author AlexKerzner
  * 
- * @version 1.0
+ * @version 1.1
  * 
  * @see Board
  *
@@ -45,6 +45,30 @@ public enum Square
 	public boolean isEmpty()
 	{
 		return (this == EMPTY);
+	}
+
+	/**
+	 * Returns the String representation of a Square
+	 * 
+	 * @return the string <code>"X"</code>, <code>"O"</code>, or <code>" "</code>.
+	 * 
+	 * @since 1.1
+	 * 
+	 * @see Square
+	 */
+	@Override
+	public String toString()
+	{
+		switch (this)
+		{
+			case X:
+				return "X";
+			case O:
+				return "O";
+			case EMPTY:
+			default:
+				return " ";
+		}
 	}
 
 	/**
