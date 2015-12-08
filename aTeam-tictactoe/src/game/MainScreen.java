@@ -16,8 +16,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.net.URL;
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -197,6 +200,10 @@ public class MainScreen extends JFrame
 
 		// Set title
 		super("aTeam Tic-Tac-Toe");
+
+		// Set icon
+		URL icon_path = getClass().getResource("icon.png");
+		setIconImage(new ImageIcon(icon_path).getImage());
 
 		// Set default close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
