@@ -17,7 +17,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -766,7 +765,7 @@ public class MainScreen extends JFrame
 		info_label_three.setFont(font);
 		panel.add(info_label_three);
 
-		JLabel info_label_four = new JLabel(" existing names.");
+		JLabel info_label_four = new JLabel(" default names. ");
 		info_label_four.setFont(font);
 		panel.add(info_label_four);
 
@@ -958,50 +957,20 @@ public class MainScreen extends JFrame
 	 */
 	protected void getControls()
 	{
-		// Create a mock-up of the tic-tac-toe board
-		JPanel panel = new JPanel(new GridLayout(2, 0));
-		JPanel game_board = new JPanel(new GridLayout(3, 3));
-		final JLabel label = new JLabel("Press a key on the number pad");
-		game_board.setBackground(Color.DARK_GRAY);
-		JButton[] controls = new JButton[9];
-		for (Integer i : ORDER)
-		{
-			controls[i - 1] = new JButton(Integer.toString(i));
-			controls[i - 1].setName(Integer.toString(i));
-			controls[i - 1].setAction(new AbstractAction()
-			{
+		String controls_text =
+			"<html><H2>Board Controls</H2><font size=\"5\">Press numbers 1 through 9 on the number<br>pad"
+				+ " to pick a spot on the board. For example, <br>press 1 to select the lower left square; "
+				+ "3 to <br>select the lower right square; 7 for the upper<br>left square; "
+				+ "and 9 for the upper right square.<br><br>Number lock must be on to use these keys.<br>"
+				+ "Keys on the number <i>row</i> will not work.</font></html>";
+		JOptionPane.showMessageDialog(getContentPane(), controls_text, "Controls",
+			JOptionPane.INFORMATION_MESSAGE);
 
-				/**
-				 * Default serial version UID
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent event)
-				{
-					label.setText("You activated button #"
-						+ ((AbstractButton) event.getSource()).getText());
-
-				}
-			});
-			controls[i - 1].getInputMap().put(KeyStroke.getKeyStroke(KEYS[i - 1], 0),
-				Integer.toString(i));
-			controls[i - 1].getActionMap().put(Integer.toString(i),
-				controls[i - 1].getAction());
-
-			controls[i - 1].setSize(100, 100);
-			game_board.add(controls[i - 1]);
-		}
-		panel.add(label);
-		panel.add(game_board);
-		panel.setSize(500, 500);
-		JOptionPane.showMessageDialog(getContentPane(), panel, "Controls",
-			JOptionPane.PLAIN_MESSAGE);
+		return;
 	}
 
 	/**
 	 * Shows the About Screen.
-	 * 
 	 */
 	protected void about()
 	{
