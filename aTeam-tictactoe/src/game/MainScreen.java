@@ -17,6 +17,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -45,7 +46,7 @@ import javax.swing.text.AbstractDocument;
  * @author WalterGoerling
  * @author JosephMiller
  * 
- * @version 1.1
+ * @version 1.4
  * 
  * @see Board
  */
@@ -132,7 +133,7 @@ public class MainScreen extends JFrame
 	/**
 	 * Release version
 	 */
-	private static final double	VERSION						= 1.2;
+	private static final double	VERSION						= 1.0;
 
 	/**
 	 * Fixed width of the Main Screen
@@ -143,6 +144,21 @@ public class MainScreen extends JFrame
 	 * Fixed height of the Main Screen
 	 */
 	private static final int		HEIGHT						= 500;
+
+	private static final Font		button_font				=
+		new Font(Font.MONOSPACED, Font.PLAIN, 42);
+	private static final int[]	ORDER							=
+																									{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
+	private static final int[]	KEYS							=
+																									{ KeyEvent.VK_NUMPAD1,
+																										KeyEvent.VK_NUMPAD2,
+																										KeyEvent.VK_NUMPAD3,
+																										KeyEvent.VK_NUMPAD4,
+																										KeyEvent.VK_NUMPAD5,
+																										KeyEvent.VK_NUMPAD6,
+																										KeyEvent.VK_NUMPAD7,
+																										KeyEvent.VK_NUMPAD8,
+																										KeyEvent.VK_NUMPAD9 };
 
 	// Variable initialization
 	Turn												turn							= Turn.NO_PLAYERS;
@@ -171,6 +187,7 @@ public class MainScreen extends JFrame
 	private JMenu								menu_edit;
 	private JMenuItem						menu_undo;
 	private JMenu								menu_help;
+	private JMenuItem						menu_controls;
 	private JMenuItem						menu_about;
 
 	/**
@@ -234,14 +251,7 @@ public class MainScreen extends JFrame
 		panels = new JPanel[9];
 		buttons = new JButton[9];
 
-		final Font button_font = new Font(Font.MONOSPACED, Font.PLAIN, 42);
-		final int[] order =
-			{ 7, 8, 9, 4, 5, 6, 1, 2, 3 };
-		final int[] keys =
-			{ KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3,
-				KeyEvent.VK_NUMPAD4, KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6,
-				KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9 };
-		for (int i : order)
+		for (int i : ORDER)
 		{
 			// This subtracts 1 from each i-value
 			i = i - 1;
@@ -269,7 +279,7 @@ public class MainScreen extends JFrame
 			});
 
 			buttons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(keys[i], 0), String.valueOf(i));
+				.put(KeyStroke.getKeyStroke(KEYS[i], 0), String.valueOf(i));
 			buttons[i].getActionMap().put(String.valueOf(i), buttons[i].getAction());
 			buttons[i].setText("");
 			buttons[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -430,6 +440,33 @@ public class MainScreen extends JFrame
 		// Create Help menu
 		menu_help = new JMenu("Help");
 		menu_help.setMnemonic(KeyEvent.VK_H);
+
+		/**
+		 * Create Help->Controls menu item
+		 */
+		menu_controls = new JMenuItem("Controls");
+		// Add action to call getControls()
+		menu_controls.setAction(new AbstractAction()
+		{
+			/**
+			 * Default serial version UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent event)
+			{
+				// Controls screen
+				getControls();
+			}
+		});
+		// Add text
+		menu_controls.setText("Controls");
+		// Add keyboard shortcut
+		menu_controls.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		// Add mnemonic
+		menu_controls.setMnemonic(KeyEvent.VK_C);
+		// Add to Help menu
+		menu_help.add(menu_controls);
 
 		/**
 		 * Create Help->About menu item
@@ -912,6 +949,54 @@ public class MainScreen extends JFrame
 			updateTurnIndicator();
 			return;
 		}
+	}
+
+	/**
+	 * Shows the Controls Screen.
+	 * 
+	 * @since 1.4
+	 */
+	protected void getControls()
+	{
+		// Create a mock-up of the tic-tac-toe board
+		JPanel panel = new JPanel(new GridLayout(2, 0));
+		JPanel game_board = new JPanel(new GridLayout(3, 3));
+		final JLabel label = new JLabel("Press a key on the number pad");
+		game_board.setBackground(Color.DARK_GRAY);
+		JButton[] controls = new JButton[9];
+		for (Integer i : ORDER)
+		{
+			controls[i - 1] = new JButton(Integer.toString(i));
+			controls[i - 1].setName(Integer.toString(i));
+			controls[i - 1].setAction(new AbstractAction()
+			{
+
+				/**
+				 * Default serial version UID
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent event)
+				{
+					label.setText("You activated button #"
+						+ ((AbstractButton) event.getSource()).getText());
+
+				}
+			});
+			controls[i - 1].getInputMap().put(KeyStroke.getKeyStroke(KEYS[i - 1], 0),
+				Integer.toString(i));
+			controls[i - 1].getActionMap().put(Integer.toString(i),
+				controls[i - 1].getAction());
+
+			controls[i - 1].setSize(100, 100);
+			game_board.add(controls[i - 1]);
+		}
+		panel.add(label);
+		panel.add(game_board);
+		panel.setSize(500, 500);
+		JOptionPane.showMessageDialog(getContentPane(), panel, "Controls",
+			JOptionPane.PLAIN_MESSAGE);
 	}
 
 	/**
